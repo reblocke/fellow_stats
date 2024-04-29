@@ -1,0 +1,314 @@
+---
+title: "fellow_stats"
+author: "Brian Locke"
+format: html
+editor: visual
+---
+
+## How to Do the Stats for Your Fellowship Project
+
+Learning Objectives: 
+
+1.  Set Up Statistical Software
+2.  Share "tacit knowledge" (how it's actually done) of how to choose a statistical analyses and perform it.
+3.  Understanding the structure of a frequentist statistical test
+4.  Understand the logic of regression models
+
+**Bad news**: you'll need to learn how to do statistical analyses:
+
+-   realistically, you\'ll probably have to do your own stats
+-   If you happen to join a project that has a statistican, you\'ll still need to be able to specify, critique, interpret the analyses. 
+
+## Statistical Programming 
+
++---------------------------+---------------------------------------------------+------------------------------------------------------------------------------+--------------------------------------+
+|                           | R                                                 | Stata                                                                        | Python                               |
++---------------------------+---------------------------------------------------+------------------------------------------------------------------------------+--------------------------------------+
+| Cost                      | Free                                              | Requires License                                                             | Free                                 |
++---------------------------+---------------------------------------------------+------------------------------------------------------------------------------+--------------------------------------+
+| IDE                       | RStudio                                           | Built in editor                                                              | Many (Visual Code best)              |
++---------------------------+---------------------------------------------------+------------------------------------------------------------------------------+--------------------------------------+
+| Strengths                 | Best epi / trials libraries for helpful functions | Simple functionality; powerful quasi-experimental support. U of U MSCI uses. | Best NLP, machine learning libraries |
++---------------------------+---------------------------------------------------+------------------------------------------------------------------------------+--------------------------------------+
+| Weakness                  | Clunky syntax; many \'dialects\'                  | Simple syntax                                                                | Moderately Complex Syntax            |
++---------------------------+---------------------------------------------------+------------------------------------------------------------------------------+--------------------------------------+
+| Explainable Programming\* | Quarto                                            | No options                                                                   | Jupyter                              |
++---------------------------+---------------------------------------------------+------------------------------------------------------------------------------+--------------------------------------+
+
+\*The idea that code should be readable by consumers of science has caught on in more quantitative fields (Math, CS), but will be coming to medicine. Long overdue.
+
+## Objective 1:  Get Set Up
+
++----------+------------------------------------+-----------------------------------------+-------------------------------------------------------------------------------------------+
+| Step 1:  | Install R Language                 | <https://cran.r-project.org/>           |                                                                                           |
++----------+------------------------------------+-----------------------------------------+-------------------------------------------------------------------------------------------+
+| Step 2:  | Install RStudio                    | <https://posit.co/downloads/>           | RStudio is an IDE (development environment)                                               |
++----------+------------------------------------+-----------------------------------------+-------------------------------------------------------------------------------------------+
+| Step 3:  | Install Quarto (formerly Markdown) | <https://quarto.org/docs/get-started/>  | Facilitates sharing and explaining your code. Will soon be standard in medical science.   |
++----------+------------------------------------+-----------------------------------------+-------------------------------------------------------------------------------------------+
+
+(This page is made using Quarto)
+
+## Objective 2(a): How to do a statistical analysis
+
+Step 0: Save yourself a headache and collect your data in a processable format [https://open.substack.com/pub/statsepi/p/simple-tips-for-recording-data-in](https://open.substack.com/pub/statsepi/p/simple-tips-for-recording-data-in?utm_campaign=post&utm_medium=web) 
+
+**Step 1: Data Wrangling**
+
+-   Each row is an observation (usually a patient)
+-   Each column contains only 1 type of data (more below)
+-   No free text (if you need to, categorize responses)
+
+**Step 2: For each data element, consider the data type**
+
+-   Binary (aka dichotomous scale): Yes or No
+-   Unordered Categorical (nominal scale): Utah, Colorado, Nevada
+-   Ordered Categorical (ordinal scale): LTAC, SNF, Home
+-   Continuous (interval & ratio scales - differ by whether 0 is special): Temperature (Celsius or Kelvin)
+
++-------------+----------------+-------------+---------------------+---------------+
+|             | dichotomous    | nominal     | ordinal             | interval      |
++-------------+----------------+-------------+---------------------+---------------+
+|             | binary         | categorical | ordered categorical | continuous    |
++-------------+----------------+-------------+---------------------+---------------+
+| n           | X              | X           | X                   | X             |
++-------------+----------------+-------------+---------------------+---------------+
+| \%          | X              | X           | X                   | X             |
++-------------+----------------+-------------+---------------------+---------------+
+| min         |                |             | X                   | X             |
++-------------+----------------+-------------+---------------------+---------------+
+| max         |                |             | X                   | X             |
++-------------+----------------+-------------+---------------------+---------------+
+| range       |                |             | X                   | X             |
++-------------+----------------+-------------+---------------------+---------------+
+| mode        | X              | X           | X                   | X             |
++-------------+----------------+-------------+---------------------+---------------+
+| mean        |                |             |                     | X             |
++-------------+----------------+-------------+---------------------+---------------+
+| median      |                |             | X                   | X             |
++-------------+----------------+-------------+---------------------+---------------+
+| IQR         |                |             | X                   | X             |
++-------------+----------------+-------------+---------------------+---------------+
+| Std. dev.   |                |             |                     | X             |
++-------------+----------------+-------------+---------------------+---------------+
+| Std. err.   |                |             |                     | X             |
++-------------+----------------+-------------+---------------------+---------------+
+
+From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Manual. Salt Lake City, UT: University of Utah School of Medicine.
+
+**Step 3: Visualize the distribution of each data-point** (detect outliers, data entry errors, etc.)
+
+## Objective 3: the Logic of Frequentist Inferential Statistics
+
+Hume: we cannot directly observe causation 
+
+[![David Hume: causation never directly observed](images/Allan_Ramsay_-_David_Hume,_1711_-_1776._Historian_and_philosopher_-_Google_Art_Project.jpg){fig-alt="David Hume" width="400"}](https://iep.utm.edu/hume-causation/)
+
+\[ \] split brain mirror experiments
+
+If there is an association between an \'exposure\' and an \'outcome\', there are 4 possible explanations
+
+1.  Chance
+2.  Confounding (some other factor influences the exposure and the outcome)
+3.  Bias
+4.  Or, causation (meaning, a real effect)
+
+**Disjunctive syllogism** = \"when you have eliminated the impossible, whatever remains, however improbable, must be the truth\". - Sherlock Holmes
+
+\*note: Bayesian analysis follows a different logic. 
+
+**P-values ONLY address possibility 1:** how likely is it that chance alone could explain the observed result?
+
+If the two variables were not correlated, what the likeliihood that you\'d see as extreme results or more - just as a result of chance? 
+
+Consider - If I start flipping a coin, how many consecutives \"Heads\" need to occur before you\'ll suspect it\'s not a fair coin? 
+
+|              |            |             |
+|--------------|------------|-------------|
+| **Sequence** | **Flips**  | **P-value** |
+| HH           | 2 flips    | 0.25        |
+| HHH          | 3 flips    | 0.125       |
+| HHHH         | 4 flips    | 0.0625      |
+|              | 4.32 flips | 0.05        |
+| HHHHH        | 5 flips    | 0.03125     |
+
+More at: <https://stat.lesslikely.com/s-values/>
+
+**IMPORTANT POINT:** the p-value is [NOT]{.underline} the probability that the coin is biased. It is the probability of seeing that result (or more extreme) [ASSUMING]{.underline} the coin is biased. 
+
+Sidebar: understanding multiplicity: If we all flipped a coin 5 times, what is the chance that one of us would get 5 heads in a row? 
+
+-   If 10 people = (1-0.03125)\^10 = 0.727.  23.3% of at least 1 HHHHH -\> we\'re back to weak evidence of a real effect. 
+-   This is obviously true when multiple tests are reported, but less obviously also true if you try several analyses and choose the "best one" after seeing the result. Hence, prespecification.
+
+**\'Signal to noise\'**: if the alternative hypothesis is that the coin is subtly imbalanced, it\'ll be a much subtler signal. This is the logic of power analysis - if you're looking for a subtle signal (e.g. small difference, noisy data, rare events), you're going to need a bigger study.
+
+However, there is **no free lunch:** a statistical tests makes assumptions about the data, and if those assumptions hold in reality, then the implications from the analysis follow.
+
+Example interpretation:
+
+If the p-value from a Chi2 test is P=0.03
+
+\[example\]
+
+(observations are independent; both variables are categorical; there are enough observations of each ), then it is unlikely chance alone explains the difference. 
+
+Using the usual significance threshold (alpha), IF the assumptions hold, we conclude it is unlikely chance alone caused the finding (though it could have been confounding, bias, or a real effect).
+
+**How do you choose the right test?**
+
+What type of variables? How many groups? Are the samples correlated (e.g. observation from the same patient at two different times)?
+
++----------------------------------------------+----------------------------------------------+----------------------------------------------------------------------+-------------------------------+------------------------------------------------------------------+
+| **Level of measurement of outcome variable** | **Two Independent Groups**                   | **Three or more Independent Groups**                                 | **Two Correlated\* Samples**  | **Three or more Correlated\* Samples**                           |
++----------------------------------------------+----------------------------------------------+----------------------------------------------------------------------+-------------------------------+------------------------------------------------------------------+
+| Dichotomous                                  | **chi-square** or Fisher\'s exact test       | **chi-square** or Fisher-Freeman-Halton test                         | McNemar test                  | Cochran Q test                                                   |
++----------------------------------------------+----------------------------------------------+----------------------------------------------------------------------+-------------------------------+------------------------------------------------------------------+
+| Unordered Categorical                        | **chi-square** or Fisher-Freeman-Halton test | **chi-square** or Fisher-Freeman-Halton test                         | Stuart-Maxwell test           | Multiplicity adjusted Stuart-Maxwell tests^*\#*^                 |
++----------------------------------------------+----------------------------------------------+----------------------------------------------------------------------+-------------------------------+------------------------------------------------------------------+
+| Ordered categorical                          | **Wilcoxon-Mann-Whitney (WMW) test**         | *Old School\*\*\*:* Kruskal-Wallis analysis of variance (ANOVA)      | Wilcoxon sign rank test       | *Old School^\#^* Friedman two-way ANOVA by ranks                 |
+|                                              |                                              |                                                                      |                               |                                                                  |
+|                                              |                                              | *New School\*\*\*:* multiplicity adjusted WMW test                   |                               | *New School^\#^* Mulitiplicity adjusted Wilcoxon sign rank tests |
++----------------------------------------------+----------------------------------------------+----------------------------------------------------------------------+-------------------------------+------------------------------------------------------------------+
+| Continuous                                   | **independent groups t-test**                | *Old school\*\*\*:* oneway ANOVA                                     | **paired t-test**             | mixed effects linear regression                                  |
+|                                              |                                              |                                                                      |                               |                                                                  |
+|                                              |                                              | *New school\*\*\*:* multiplicity adjusted independent groups t tests |                               |                                                                  |
++----------------------------------------------+----------------------------------------------+----------------------------------------------------------------------+-------------------------------+------------------------------------------------------------------+
+| Censored: time to event                      | **log-rank test**                            | Multiplicity adjusted log-rank test                                  | Shared-frailty Cox regression | Shared-frailty Cox regression                                    |
++----------------------------------------------+----------------------------------------------+----------------------------------------------------------------------+-------------------------------+------------------------------------------------------------------+
+
+From: From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Manual. Salt Lake City, UT: University of Utah School of Medicine.
+
+How can you collaborate effectively with a statistician? They will know these assumptions and can tell you when your analyses makes dubious assumptions (if you communicate the constraints of the problem correctly)
+
+Example 2: 
+
+\*\*\*
+
+## Objective 4: Understand the logic of regression analysis
+
+Recall, if there is an association between an \'exposure\' and an \'outcome\', there are 4 possible explanations
+
+1.  Chance
+2.  Confounding (some other factor influences the exposure and the outcome)
+3.  Bias 
+4.  Or, causation (a real effect)
+
+Randomization addresses point 2 (essentially, converts it to point 1, in that only chance confounding can occur)
+
+For non-randomized data, you must make an argument against point 2. This is the most common use of regression. 
+
+\[the methods section of your paper is the argument against point 3; pull in RECORD/STROBE recs\]
+
+**There are at least 3 uses of regression models:** 
+
+1.  Inferential Statistics: Hypothesis testing with confounding control
+2.  Descriptive Statistics: Summarize the strength of association
+3.  Prediction of an outcome (e.g. statistical machine learning)
+
+Regression comes with additional assumptions: 
+
+-   Independent observations (special \"mixed models\" can relax this)
+-   The form of the output variable is correct\* 
+-   The form of the predictor variables are correct
+-   The relationship between the predictors are properly specified.\*\*
+-   Additional constraints (e.g. constant variance)
+
+Thus the logic is: if the assumptions of the models hold in reality, then the described relationships are valid
+
+-   No model is perfect, but some models are useful
+
+Output variable (aka the dependent variable, predicted variable) form determines the type of regression : 
+
++----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
+| **Level of measurement of outcome variable** | **Two Independent Groups without Confounding Adjustment** | **Two Independent Groups without Confounding Adjustment** |
++----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
+| Dichotomous                                  | Chi2 Test                                                 | logistic regression                                       |
++----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
+| Unordered categorical                        | Chi2 Test                                                 | multinomial logistic regression                           |
++----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
+| Ordered categorical                          | Wilcoxon-Mann-Whitney                                     | ordinal logistic regression                               |
++----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
+| Continuous (normal)                          | T-test                                                    | linear regression                                         |
++----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
+| Censored: time to event                      | Log-rank test                                             | Cox regression                                            |
++----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
+
+From: From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Manual. Salt Lake City, UT: University of Utah School of Medicine.
+
+\*\* Form of the predictors and their relationships to eachother+the outcome is properly specified
+
+DAG - daggitty 
+
+**Interpretation:**
+
+Regression coefficient = What change in the outcome do you expected if you change the predictor by 1 unit, holding all other variables constant
+
+-   For linear regression: additive change in outcome
+-   For logistic regression: multiplicative change in odds of the outcome
+-   For Cox regression: multiplicative change in the hazard of the outcome. 
+
+Example: Occurence
+
+Consider: do you want the adjusted or the unadjusted estimate? 
+
+## Objective 2(b):  More guidance for how to do the work
+
+**Packages**
+
+Other people have mostly done all the analyses you'll want to do:
+
+-   Curated lists of relevant packages: <https://cran.r-project.org/web/views/>
+-   \'?package\'  or \'?command\' will bring up the documentation
+
+Example: Say you want to do a meta-analysis.
+
+Relevant packages: <https://cran.r-project.org/web/views/MetaAnalysis.html>
+
+```{r}
+
+```
+
+**Large Language Models:**
+Options:
+
+-   OpenAI Chat GPT (requires subscription for best performance; custom GPTs)
+-   Github CoPilot (programming specific)
+-   Microsoft CoPilot - access to GPT4 = free through University of Utah
+
+Copilot:
+
+-   Visit [bing.com/chat](https://bing.com/chat).
+-   Select \"sign in with a work or school account\" under the Sign in icon in the upper right corner of the page.
+-   Enter your unid\@umail.utah.edu and uNID password.
+-   Complete Duo two-factor authentication.
+-   The conversation is protected when a green shield appears in the upper right corner next to your username. It is critical to verify that the green shield is present for all conversations.
+
+Prompt Engineering:
+
+1.  have the GPT take the persona that you want
+2.  spell out the chain of thougt that you want the GPT to take (either multiple steps in 1 prompt or several prompts building on one another works)
+3.  Give examples or specifications of what you want done. \[this is particularly useful because the documents you give it can form a context and examples\]. 
+
+**U of U Resources -** 
+
+-   One Data Science Hub Workshops: <https://utah-data-science-hub.github.io/education_archived.html>  
+
+-   Request CTSI help: <https://ctsi.utah.edu/cores-and-services/triad> 
+
+-   Intuitive Biostatistics by Harvey Motulsky - <https://a.co/d/4NCk2bS> 
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
