@@ -1,13 +1,11 @@
 ---
-title: "fellow_stats"
-author: "Brian Locke"
+title: "How to Do the Stats for Your Fellowship Project"
+author: "Brian Locke, MD MSCI"
 format: html
 editor: visual
 ---
 
-## How to Do the Stats for Your Fellowship Project
-
-Learning Objectives: 
+## Learning Objectives: 
 
 1.  Set Up Statistical Software
 2.  Share "tacit knowledge" (how it's actually done) of how to choose a statistical analyses and perform it.
@@ -149,7 +147,9 @@ Example interpretation:
 
 If the p-value from a Chi2 test is P=0.03
 
-\[example\]
+```{r}
+# Example 1: 
+```
 
 (observations are independent; both variables are categorical; there are enough observations of each ), then it is unlikely chance alone explains the difference. 
 
@@ -183,7 +183,9 @@ How can you collaborate effectively with a statistician? They will know these as
 
 Example 2: 
 
-\*\*\*
+```{r}
+# Example 2
+```
 
 ## Objective 4: Understand the logic of regression analysis
 
@@ -216,29 +218,25 @@ Regression comes with additional assumptions: 
 
 Thus the logic is: if the assumptions of the models hold in reality, then the described relationships are valid
 
--   No model is perfect, but some models are useful
+-   Morris moment (TM): No model is perfect, but some models are useful
 
 Output variable (aka the dependent variable, predicted variable) form determines the type of regression : 
 
-+----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
-| **Level of measurement of outcome variable** | **Two Independent Groups without Confounding Adjustment** | **Two Independent Groups without Confounding Adjustment** |
-+----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
-| Dichotomous                                  | Chi2 Test                                                 | logistic regression                                       |
-+----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
-| Unordered categorical                        | Chi2 Test                                                 | multinomial logistic regression                           |
-+----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
-| Ordered categorical                          | Wilcoxon-Mann-Whitney                                     | ordinal logistic regression                               |
-+----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
-| Continuous (normal)                          | T-test                                                    | linear regression                                         |
-+----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
-| Censored: time to event                      | Log-rank test                                             | Cox regression                                            |
-+----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
++----------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------+
+| **Level of measurement of outcome variable** | **Two Independent Groups without Confounding Adjustment** | **Two Independent Groups without Confounding Adjustment**  |
++----------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------+
+| Dichotomous                                  | Chi2 Test                                                 | **logistic regression**                                    |
++----------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------+
+| Unordered categorical                        | Chi2 Test                                                 | multinomial logistic regression                            |
++----------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------+
+| Ordered categorical                          | Wilcoxon-Mann-Whitney                                     | ordinal logistic regression                                |
++----------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------+
+| Continuous (normally distributed)            | T-test                                                    | **linear regression**                                      |
++----------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------+
+| Censored: time to event                      | Log-rank test                                             | **Cox regression**                                         |
++----------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------+
 
 From: From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Manual. Salt Lake City, UT: University of Utah School of Medicine.
-
-\*\* Form of the predictors and their relationships to eachother+the outcome is properly specified
-
-DAG - daggitty 
 
 **Interpretation:**
 
@@ -249,6 +247,10 @@ Regression coefficient = What change in the outcome do you expected if you chang
 -   For Cox regression: multiplicative change in the hazard of the outcome. 
 
 Example: Occurence
+
+\*\* Form of the predictors and their relationships to eachother+the outcome is properly specified
+
+DAG - daggitty 
 
 Consider: do you want the adjusted or the unadjusted estimate? 
 
@@ -265,8 +267,51 @@ Example: Say you want to do a meta-analysis.
 
 Relevant packages: <https://cran.r-project.org/web/views/MetaAnalysis.html>
 
-```{r}
+The 'meta' package looks good
 
+```{r}
+install.packages('meta')
+```
+
+you can access the documentation using
+
+```{r}
+?meta
+```
+
+Let's try an example... I extracted data on all of the trials comparing high O2 to low O2 targets and uploaded to github.
+
+```{r}
+library(readxl) # a package to read excel files - try ?readxl
+library(dplyr) # a package to process data. - try ?dplyr
+
+# Define the URL of the Excel file on GitHub
+url <- "https://github.com/reblocke/fellow_stats/raw/main/O2%20icu%20target%20MA.xls"
+
+# Download the file temporarily
+temp_file <- tempfile(fileext = ".xls")
+download.file(url, temp_file, mode = "wb")
+
+# Read the Excel file, select columns, and arrange
+data_sheet <- read_excel(temp_file) %>%
+  select(-other_comment) %>%
+  arrange(year)
+
+# Clean up by removing the temporary file
+unlink(temp_file)
+
+head(data_sheet)
+authors <- select(data_sheet, author)
+```
+
+Now, let's meta-analyze it:
+
+```{r}
+library(meta)
+
+#metabin takes events, total (rather than events, nonevents)
+m_ex1 <- meta::metabin(low_o2_died, num_low_o2, high_o2_died, num_high_o2, data = data_sheet, studlab = paste(name, author, year), sm = "OR")
+meta::forest(m_ex1, comb.random = FALSE, lab.c = "High Oxygen", lab.e = "Low Oxygen", label.left = "Favors Low O2", label.right = "Favors High O2")
 ```
 
 **Large Language Models:**
@@ -290,25 +335,10 @@ Prompt Engineering:
 2.  spell out the chain of thougt that you want the GPT to take (either multiple steps in 1 prompt or several prompts building on one another works)
 3.  Give examples or specifications of what you want done. \[this is particularly useful because the documents you give it can form a context and examples\]. 
 
+![The prompt I used to create the above example.](images/IMG_ADC8B4B4AF1D-1.jpeg){width="462"}
+
 **U of U Resources -** 
 
 -   One Data Science Hub Workshops: <https://utah-data-science-hub.github.io/education_archived.html>  
-
 -   Request CTSI help: <https://ctsi.utah.edu/cores-and-services/triad> 
-
 -   Intuitive Biostatistics by Harvey Motulsky - <https://a.co/d/4NCk2bS> 
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
