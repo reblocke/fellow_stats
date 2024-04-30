@@ -9,13 +9,13 @@ editor: visual
 
 1.  Set Up Statistical Software
 2.  Share "tacit knowledge" (how it's actually done) of how to choose a statistical analyses and perform it.
-3.  Understanding the structure of a frequentist statistical test
+3.  Understanding the structure of frequentist statistical tests
 4.  Understand the logic of regression models
 
 **Bad news**: you'll need to learn how to do statistical analyses:
 
 -   realistically, you\'ll probably have to do your own stats
--   If you happen to join a project that has a statistican, you\'ll still need to be able to specify, critique, interpret the analyses. 
+-   if you join a project that has a statistican, you\'ll still need to be able to specify, critique, and interpret the analyses.
 
 ## Statistical Programming 
 
@@ -45,7 +45,7 @@ editor: visual
 | Step 3:  | Install Quarto (formerly Markdown) | <https://quarto.org/docs/get-started/>  | Facilitates sharing and explaining your code. Will soon be standard in medical science.   |
 +----------+------------------------------------+-----------------------------------------+-------------------------------------------------------------------------------------------+
 
-(This page is made using Quarto)
+This page is made using Quarto.
 
 ## Objective 2(a): How to do a statistical analysis
 
@@ -59,48 +59,52 @@ Step 0: Save yourself a headache and collect your data in a processable format [
 
 **Step 2: For each data element, consider the data type**
 
--   Binary (aka dichotomous scale): Yes or No
--   Unordered Categorical (nominal scale): Utah, Colorado, Nevada
--   Ordered Categorical (ordinal scale): LTAC, SNF, Home
--   Continuous (interval & ratio scales - differ by whether 0 is special): Temperature (Celsius or Kelvin)
+-   Binary (aka dichotomous scale): e.g. Yes or No, 0 or 1
+-   Unordered Categorical (nominal scale): e.g. Utah, Colorado, Nevada, Idaho
+-   Ordered Categorical (ordinal scale): e.g. Room air, nasal cannula, HFNC, intubated, ECMO, dead
+-   Continuous (interval & ratio scales - differ by whether 0 is special): e.g. Temperature (Celsius or Kelvin, respectively)
 
-+-------------+----------------+-------------+---------------------+---------------+
-|             | dichotomous    | nominal     | ordinal             | interval      |
-+-------------+----------------+-------------+---------------------+---------------+
-|             | binary         | categorical | ordered categorical | continuous    |
-+-------------+----------------+-------------+---------------------+---------------+
-| n           | X              | X           | X                   | X             |
-+-------------+----------------+-------------+---------------------+---------------+
-| \%          | X              | X           | X                   | X             |
-+-------------+----------------+-------------+---------------------+---------------+
-| min         |                |             | X                   | X             |
-+-------------+----------------+-------------+---------------------+---------------+
-| max         |                |             | X                   | X             |
-+-------------+----------------+-------------+---------------------+---------------+
-| range       |                |             | X                   | X             |
-+-------------+----------------+-------------+---------------------+---------------+
-| mode        | X              | X           | X                   | X             |
-+-------------+----------------+-------------+---------------------+---------------+
-| mean        |                |             |                     | X             |
-+-------------+----------------+-------------+---------------------+---------------+
-| median      |                |             | X                   | X             |
-+-------------+----------------+-------------+---------------------+---------------+
-| IQR         |                |             | X                   | X             |
-+-------------+----------------+-------------+---------------------+---------------+
-| Std. dev.   |                |             |                     | X             |
-+-------------+----------------+-------------+---------------------+---------------+
-| Std. err.   |                |             |                     | X             |
-+-------------+----------------+-------------+---------------------+---------------+
++-------------+------------------+-------------+---------------------+----------------+
+|             | **dichotomous**  | **nominal** | **ordinal**         | **interval**   |
++-------------+------------------+-------------+---------------------+----------------+
+| a.ka.       | binary           | categorical | ordered categorical | continuous     |
++-------------+------------------+-------------+---------------------+----------------+
+| n           | X                | X           | X                   | X              |
++-------------+------------------+-------------+---------------------+----------------+
+| \%          | X                | X           | X                   | X              |
++-------------+------------------+-------------+---------------------+----------------+
+| min         |                  |             | X                   | X              |
++-------------+------------------+-------------+---------------------+----------------+
+| max         |                  |             | X                   | X              |
++-------------+------------------+-------------+---------------------+----------------+
+| range       |                  |             | X                   | X              |
++-------------+------------------+-------------+---------------------+----------------+
+| mode        | X                | X           | X                   | X              |
++-------------+------------------+-------------+---------------------+----------------+
+| mean        |                  |             |                     | X              |
++-------------+------------------+-------------+---------------------+----------------+
+| median      |                  |             | X                   | X              |
++-------------+------------------+-------------+---------------------+----------------+
+| IQR         |                  |             | X                   | X              |
++-------------+------------------+-------------+---------------------+----------------+
+| Std. dev.   |                  |             |                     | X              |
++-------------+------------------+-------------+---------------------+----------------+
+| Std. err.   |                  |             |                     | X              |
++-------------+------------------+-------------+---------------------+----------------+
 
 From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Manual. Salt Lake City, UT: University of Utah School of Medicine.
 
 **Step 3: Visualize the distribution of each data-point** (detect outliers, data entry errors, etc.)
 
+```{r}
+# Example
+```
+
 ## Objective 3: the Logic of Frequentist Inferential Statistics
 
 Hume: we cannot directly observe causation 
 
-[![David Hume: causation never directly observed](images/Allan_Ramsay_-_David_Hume,_1711_-_1776._Historian_and_philosopher_-_Google_Art_Project.jpg){fig-alt="David Hume" width="400"}](https://iep.utm.edu/hume-causation/)
+[![David Hume: causation is never directly observed](images/Allan_Ramsay_-_David_Hume,_1711_-_1776._Historian_and_philosopher_-_Google_Art_Project.jpg){fig-alt="David Hume" width="400"}](https://iep.utm.edu/hume-causation/)
 
 \[ \] split brain mirror experiments
 
@@ -111,15 +115,17 @@ If there is an association between an \'exposure\' and an \'outcome\', there are
 3.  Bias
 4.  Or, causation (meaning, a real effect)
 
-**Disjunctive syllogism** = \"when you have eliminated the impossible, whatever remains, however improbable, must be the truth\". - Sherlock Holmes
+**Disjunctive syllogism**:
+
+> When you have eliminated the impossible, whatever remains, however improbable, must be the truth. 
+
+\- Sherlock Holmes
 
 \*note: Bayesian analysis follows a different logic. 
 
-**P-values ONLY address possibility 1:** how likely is it that chance alone could explain the observed result?
+**P-values ONLY address possibility 1:** how likely is it that chance alone could explain the observed result If the two variables were not correlated, what the likeliihood that you\'d see as extreme results or more - just as a result of chance? 
 
-If the two variables were not correlated, what the likeliihood that you\'d see as extreme results or more - just as a result of chance? 
-
-Consider - If I start flipping a coin, how many consecutives \"Heads\" need to occur before you\'ll suspect it\'s not a fair coin? 
+Consider: if I start flipping a coin, how many consecutives \"Heads\" need to occur before you\'ll suspect it\'s not a fair coin? 
 
 |              |            |             |
 |--------------|------------|-------------|
@@ -139,7 +145,7 @@ Sidebar: understanding multiplicity: If we all flipped a coin 5 times, what is t
 -   If 10 people = (1-0.03125)\^10 = 0.727.  23.3% of at least 1 HHHHH -\> we\'re back to weak evidence of a real effect. 
 -   This is obviously true when multiple tests are reported, but less obviously also true if you try several analyses and choose the "best one" after seeing the result. Hence, prespecification.
 
-**\'Signal to noise\'**: if the alternative hypothesis is that the coin is subtly imbalanced, it\'ll be a much subtler signal. This is the logic of power analysis - if you're looking for a subtle signal (e.g. small difference, noisy data, rare events), you're going to need a bigger study.
+**\'Signal to noise\'**: if the alternative hypothesis is that the coin is subtly imbalanced, it\'ll be a much harder to detect signal. This is the logic of power analysis - if you're looking for a subtle signal (e.g. small difference, noisy data, rare events), you'll need a bigger study.
 
 However, there is **no free lunch:** a statistical tests makes assumptions about the data, and if those assumptions hold in reality, then the implications from the analysis follow.
 
@@ -218,7 +224,9 @@ Regression comes with additional assumptions: 
 
 Thus the logic is: if the assumptions of the models hold in reality, then the described relationships are valid
 
--   Morris moment (TM): No model is perfect, but some models are useful
+> No model is perfect, but some models are useful
+
+-   Morris moment(TM)
 
 Output variable (aka the dependent variable, predicted variable) form determines the type of regression : 
 
@@ -261,27 +269,19 @@ Consider: do you want the adjusted or the unadjusted estimate? 
 Other people have mostly done all the analyses you'll want to do:
 
 -   Curated lists of relevant packages: <https://cran.r-project.org/web/views/>
--   \'?package\'  or \'?command\' will bring up the documentation
+-   \`install.packages( )\` will install the packages
+-   \`?package\`  or \`?command\` will bring up the documentation
 
 Example: Say you want to do a meta-analysis.
 
 Relevant packages: <https://cran.r-project.org/web/views/MetaAnalysis.html>
 
-The 'meta' package looks good
-
-```{r}
-install.packages('meta')
-```
-
-you can access the documentation using
-
-```{r}
-?meta
-```
+The 'meta' package looks good. Try using \`install.packages('meta')\` to install it, then you can you can access the documentation using \`?meta\`
 
 Let's try an example... I extracted data on all of the trials comparing high O2 to low O2 targets and uploaded to github.
 
 ```{r}
+#| echo: false
 library(readxl) # a package to read excel files - try ?readxl
 library(dplyr) # a package to process data. - try ?dplyr
 
@@ -299,7 +299,9 @@ data_sheet <- read_excel(temp_file) %>%
 
 # Clean up by removing the temporary file
 unlink(temp_file)
+```
 
+```{r}
 head(data_sheet)
 authors <- select(data_sheet, author)
 ```
@@ -313,6 +315,29 @@ library(meta)
 m_ex1 <- meta::metabin(low_o2_died, num_low_o2, high_o2_died, num_high_o2, data = data_sheet, studlab = paste(name, author, year), sm = "OR")
 meta::forest(m_ex1, comb.random = FALSE, lab.c = "High Oxygen", lab.e = "Low Oxygen", label.left = "Favors Low O2", label.right = "Favors High O2")
 ```
+
+And if you want to get really cutting edge, you can do a trial sequential analysis (TSA) on it:
+
+```{r}
+library(RTSA) # A package for performing TSA
+library(tidyverse) # A package that pulls in many data manipulation programs.
+
+rtsa_df <- data_sheet |> 
+  rename("eI" = high_o2_died, 
+         "eC" = low_o2_died, 
+         "nI" = num_high_o2,
+         "nC" = num_low_o2, 
+         "study" = name)
+
+map(rtsa_df, class)
+sapply(rtsa_df, function(x) which(is.na(x)))
+
+an_rtsa <- RTSA(type="analysis", data =  rtsa_df , outcome = "RR", mc = 0.9, side = 2,  alpha = 0.05, beta = 0.1, es_alpha = "esOF", es_beta = "esOF", futility = "non-binding", random_adj = "D2", D2 = 0.25 )
+
+plot(an_rtsa)
+```
+
+Meaning, we've passed futility (at 90% power) for a 10% relative risk reduction a few trials ago. Cool.
 
 **Large Language Models:**
 Options:
@@ -334,6 +359,8 @@ Prompt Engineering:
 1.  have the GPT take the persona that you want
 2.  spell out the chain of thougt that you want the GPT to take (either multiple steps in 1 prompt or several prompts building on one another works)
 3.  Give examples or specifications of what you want done. \[this is particularly useful because the documents you give it can form a context and examples\]. 
+
+How I used GPT4 creating this workbook:
 
 ![The prompt I used to create the above example.](images/IMG_ADC8B4B4AF1D-1.jpeg){width="462"}
 

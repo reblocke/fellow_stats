@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Brian Locke">
+<meta name="author" content="Brian Locke, MD MSCI">
 
-<title>fellow_stats</title>
+<title>How to Do the Stats for Your Fellowship Project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">fellow_stats</h1>
+<h1 class="title">How to Do the Stats for Your Fellowship Project</h1>
 </div>
 
 
@@ -90,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Brian Locke </p>
+             <p>Brian Locke, MD MSCI </p>
           </div>
   </div>
     
@@ -101,19 +101,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="how-to-do-the-stats-for-your-fellowship-project" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-do-the-stats-for-your-fellowship-project">How to Do the Stats for Your Fellowship Project</h2>
-<p>Learning Objectives:&nbsp;</p>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning Objectives:&nbsp;</h2>
 <ol type="1">
 <li>Set Up Statistical Software</li>
-<li>Share “tacit knowledge” of how to choose a statistical analyses and perform it.</li>
-<li>Understanding the structure of a frequentist statistical test</li>
+<li>Share “tacit knowledge” (how it’s actually done) of how to choose a statistical analyses and perform it.</li>
+<li>Understanding the structure of frequentist statistical tests</li>
 <li>Understand the logic of regression models</li>
 </ol>
-<p>Bad news: you’ll need to learn how to do statistical analyses:</p>
+<p><strong>Bad news</strong>: you’ll need to learn how to do statistical analyses:</p>
 <ul>
-<li><p>realistically, you'll probably have to do your own stats</p></li>
-<li><p>If you join a project that has a statistican, you'll still need to be able to specify, critique, interpret the analyses.&nbsp;</p></li>
+<li>realistically, you'll probably have to do your own stats</li>
+<li>if you join a project that has a statistican, you'll still need to be able to specify, critique, and interpret the analyses.</li>
 </ul>
 </section>
 <section id="statistical-programming" class="level2">
@@ -165,7 +164,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p>*The idea that code should be readable by consumers of science has caught on in more quantitative fields (Math, CS), but will be coming to medicine. Long overdue.</p>
-<p>&nbsp;</p>
 </section>
 <section id="objective-1-get-set-up" class="level2">
 <h2 class="anchored" data-anchor-id="objective-1-get-set-up">Objective 1: Get Set Up</h2>
@@ -191,42 +189,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>(This page is made using Quarto)</p>
+<p>This page is made using Quarto.</p>
 </section>
 <section id="objective-2a-how-to-do-a-statistical-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="objective-2a-how-to-do-a-statistical-analysis">Objective 2(a): How to do a statistical analysis</h2>
 <p>Step 0: Save yourself a headache and collect your data in a processable format <a href="https://open.substack.com/pub/statsepi/p/simple-tips-for-recording-data-in?utm_campaign=post&amp;utm_medium=web">https://open.substack.com/pub/statsepi/p/simple-tips-for-recording-data-in</a>&nbsp;</p>
 <p><strong>Step 1: Data Wrangling</strong></p>
 <ul>
-<li><p>Each row is an observation (usually a patient)</p></li>
-<li><p>Each column contains only 1 type of data (more below)</p></li>
-<li><p>No free text (if you need to, categorize responses)</p></li>
+<li>Each row is an observation (usually a patient)</li>
+<li>Each column contains only 1 type of data (more below)</li>
+<li>No free text (if you need to, categorize responses)</li>
 </ul>
 <p><strong>Step 2: For each data element, consider the data type</strong></p>
 <ul>
-<li><p>Binary (aka dichotomous scale): Yes or No</p></li>
-<li><p>Unordered Categorical (nominal scale): Utah, Colorado, Nevada</p></li>
-<li><p>Ordered Categorical (ordinal scale): LTAC, SNF, Home</p></li>
-<li><p>Continuous (interval &amp; ratio scales - differ by whether 0 is special): Temperature (Celsius or Kelvin)</p></li>
+<li>Binary (aka dichotomous scale): e.g.&nbsp;Yes or No, 0 or 1</li>
+<li>Unordered Categorical (nominal scale): e.g.&nbsp;Utah, Colorado, Nevada, Idaho</li>
+<li>Ordered Categorical (ordinal scale): e.g.&nbsp;Room air, nasal cannula, HFNC, intubated, ECMO, dead</li>
+<li>Continuous (interval &amp; ratio scales - differ by whether 0 is special): e.g.&nbsp;Temperature (Celsius or Kelvin, respectively)</li>
 </ul>
 <table class="table">
 <colgroup>
-<col style="width: 16%">
+<col style="width: 15%">
+<col style="width: 21%">
+<col style="width: 15%">
+<col style="width: 24%">
 <col style="width: 19%">
-<col style="width: 16%">
-<col style="width: 25%">
-<col style="width: 18%">
 </colgroup>
 <tbody>
 <tr class="odd">
 <td></td>
-<td>dichotomous</td>
-<td>nominal</td>
-<td>ordinal</td>
-<td>interval</td>
+<td><strong>dichotomous</strong></td>
+<td><strong>nominal</strong></td>
+<td><strong>ordinal</strong></td>
+<td><strong>interval</strong></td>
 </tr>
 <tr class="even">
-<td></td>
+<td>a.ka.</td>
 <td>binary</td>
 <td>categorical</td>
 <td>ordered categorical</td>
@@ -311,21 +309,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>Citation: Stoddard</p>
+<p>From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Manual. Salt Lake City, UT: University of Utah School of Medicine.</p>
 <p><strong>Step 3: Visualize the distribution of each data-point</strong> (detect outliers, data entry errors, etc.)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="objective-3-the-logic-of-frequentist-inferential-statistics" class="level2">
 <h2 class="anchored" data-anchor-id="objective-3-the-logic-of-frequentist-inferential-statistics">Objective 3: the Logic of Frequentist Inferential Statistics</h2>
 <p>Hume: we cannot directly observe causation&nbsp;</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://iep.utm.edu/hume-causation/"><img src="images/Allan_Ramsay_-_David_Hume,_1711_-_1776._Historian_and_philosopher_-_Google_Art_Project.jpg" class="img-fluid figure-img" alt="David Hume" width="400"></a></p>
+<figcaption class="figure-caption">David Hume: causation is never directly observed</figcaption>
+</figure>
+</div>
 <p>[ ] split brain mirror experiments</p>
 <p>If there is an association between an 'exposure' and an 'outcome', there are 4 possible explanations</p>
 <ol type="1">
-<li><p>Chance</p></li>
-<li><p>Confounding (some other factor influences the exposure and the outcome)</p></li>
-<li><p>Bias&nbsp;</p></li>
-<li><p>Or, causation (meaning, a real effect)</p></li>
+<li>Chance</li>
+<li>Confounding (some other factor influences the exposure and the outcome)</li>
+<li>Bias</li>
+<li>Or, causation (meaning, a real effect)</li>
 </ol>
-<p><strong>Disjunctive syllogism</strong> = "when you have eliminated the impossible, whatever remains, however improbable, must be the truth".&nbsp;</p>
+<p><strong>Disjunctive syllogism</strong>:</p>
+<blockquote class="blockquote">
+<p>When you have eliminated the impossible, whatever remains, however improbable, must be the truth.&nbsp;</p>
+</blockquote>
+<p>- Sherlock Holmes</p>
 <p>*note: Bayesian analysis follows a different logic.&nbsp;</p>
 <p><strong>P-values ONLY address possibility 1:</strong> how likely is it that chance alone could explain the observed result?</p>
 <p>If the two variables were not correlated, what the likeliihood that you'd see as extreme results or more - just as a result of chance?&nbsp;</p>
@@ -333,9 +344,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <table class="table">
 <tbody>
 <tr class="odd">
-<td>Sequence</td>
-<td>Flips</td>
-<td>P-value</td>
+<td><strong>Sequence</strong></td>
+<td><strong>Flips</strong></td>
+<td><strong>P-value</strong></td>
 </tr>
 <tr class="even">
 <td>HH</td>
@@ -364,35 +375,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
+<p>More at: <a href="https://stat.lesslikely.com/s-values/" class="uri">https://stat.lesslikely.com/s-values/</a></p>
 <p><strong>IMPORTANT POINT:</strong> the p-value is <u>NOT</u> the probability that the coin is biased. It is the probability of seeing that result (or more extreme) <u>ASSUMING</u> the coin is biased.&nbsp;</p>
 <p>Sidebar: understanding multiplicity: If we all flipped a coin 5 times, what is the chance that one of us would get 5 heads in a row?&nbsp;</p>
 <ul>
 <li>If 10 people = (1-0.03125)^10 = 0.727.&nbsp; 23.3% of at least 1 HHHHH -&gt; we're back to weak evidence of a real effect.&nbsp;</li>
+<li>This is obviously true when multiple tests are reported, but less obviously also true if you try several analyses and choose the “best one” after seeing the result. Hence, prespecification.</li>
 </ul>
-<p><strong>'Signal to noise'</strong>: if the alternative hypothesis is that the coin is subtly imbalanced, it'll be a much subtler signal.&nbsp;This is the logic of power analysis.</p>
+<p><strong>'Signal to noise'</strong>: if the alternative hypothesis is that the coin is subtly imbalanced, it'll be a much subtler signal.&nbsp;This is the logic of power analysis - if you’re looking for a subtle signal (e.g.&nbsp;small difference, noisy data, rare events), you’re going to need a bigger study.</p>
 <p>However, there is <strong>no free lunch:</strong> a statistical tests makes assumptions about the data, and if those assumptions hold in reality, then the implications from the analysis follow.</p>
 <p>Example interpretation:</p>
 <p>If the p-value from a Chi2 test is P=0.03</p>
-<p>[example]</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 1: </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>(observations are independent; both variables are categorical; there are enough observations of each ), then it is unlikely chance alone explains the difference.&nbsp;</p>
 <p>Using the usual significance threshold (alpha), IF the assumptions hold, we conclude it is unlikely chance alone caused the finding (though it could have been confounding, bias, or a real effect).</p>
 <p><strong>How do you choose the right test?</strong></p>
 <p>What type of variables? How many groups? Are the samples correlated (e.g.&nbsp;observation from the same patient at two different times)?</p>
 <table class="table">
 <colgroup>
-<col style="width: 16%">
+<col style="width: 17%">
 <col style="width: 17%">
 <col style="width: 26%">
-<col style="width: 12%">
+<col style="width: 11%">
 <col style="width: 25%">
 </colgroup>
 <tbody>
 <tr class="odd">
-<td>Level of measurement of outcome variable</td>
-<td>Two Independent Groups</td>
-<td>Three or more Independent Groups</td>
-<td>Two Correlated* Samples</td>
-<td>Three or more Correlated* Samples</td>
+<td><strong>Level of measurement of outcome variable</strong></td>
+<td><strong>Two Independent Groups</strong></td>
+<td><strong>Three or more Independent Groups</strong></td>
+<td><strong>Two Correlated* Samples</strong></td>
+<td><strong>Three or more Correlated* Samples</strong></td>
 </tr>
 <tr class="even">
 <td>Dichotomous</td>
@@ -434,57 +449,63 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
+<p>From: From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Manual. Salt Lake City, UT: University of Utah School of Medicine.</p>
 <p>How can you collaborate effectively with a statistician? They will know these assumptions and can tell you when your analyses makes dubious assumptions (if you communicate the constraints of the problem correctly)</p>
 <p>Example 2:&nbsp;</p>
-<p>***</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="objective-4-understand-the-logic-of-regression-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="objective-4-understand-the-logic-of-regression-analysis">Objective 4: Understand the logic of regression analysis</h2>
 <p>Recall, if there is an association between an 'exposure' and an 'outcome', there are 4 possible explanations</p>
 <ol type="1">
-<li><p>Chance</p></li>
-<li><p>Confounding (some other factor influences the exposure and the outcome)</p></li>
-<li><p>Bias&nbsp;</p></li>
-<li><p>Or, causation (a real effect)</p></li>
+<li>Chance</li>
+<li>Confounding (some other factor influences the exposure and the outcome)</li>
+<li>Bias&nbsp;</li>
+<li>Or, causation (a real effect)</li>
 </ol>
 <p>Randomization addresses point 2 (essentially, converts it to point 1, in that only chance confounding can occur)</p>
 <p>For non-randomized data, you must make an argument against point 2. This is the most common use of regression.&nbsp;</p>
 <p>[the methods section of your paper is the argument against point 3; pull in RECORD/STROBE recs]</p>
 <p><strong>There are at least 3 uses of regression models:</strong>&nbsp;</p>
 <ol type="1">
-<li><p>Inferential Statistics: Hypothesis testing with confounding control</p></li>
-<li><p>Descriptive Statistics: Summarize the strength of association</p></li>
-<li><p>Prediction of an outcome (e.g.&nbsp;statistical machine learning)</p></li>
+<li>Inferential Statistics: Hypothesis testing with confounding control</li>
+<li>Descriptive Statistics: Summarize the strength of association</li>
+<li>Prediction of an outcome (e.g.&nbsp;statistical machine learning)</li>
 </ol>
 <p>Regression comes with additional assumptions:&nbsp;</p>
 <ul>
-<li><p>Independent observations (special "mixed models" can relax this)</p></li>
-<li><p>The form of the output variable is correct*&nbsp;</p></li>
-<li><p>The form of the predictor variables are correct</p></li>
-<li><p>The relationship between the predictors are properly specified.**</p></li>
-<li><p>Additional constraints (e.g.&nbsp;constant variance)</p></li>
+<li>Independent observations (special "mixed models" can relax this)</li>
+<li>The form of the output variable is correct*&nbsp;</li>
+<li>The form of the predictor variables are correct</li>
+<li>The relationship between the predictors are properly specified.**</li>
+<li>Additional constraints (e.g.&nbsp;constant variance)</li>
 </ul>
 <p>Thus the logic is: if the assumptions of the models hold in reality, then the described relationships are valid</p>
+<blockquote class="blockquote">
+<p>No model is perfect, but some models are useful</p>
+</blockquote>
 <ul>
-<li>No model is perfect, but some models are useful</li>
+<li>Morris moment(TM)</li>
 </ul>
-<p>Ouptut variable (aka the dependent variable, predicted variable) form determines the type of regression :&nbsp;</p>
+<p>Output variable (aka the dependent variable, predicted variable) form determines the type of regression :&nbsp;</p>
 <table class="table">
 <colgroup>
 <col style="width: 27%">
 <col style="width: 35%">
-<col style="width: 35%">
+<col style="width: 36%">
 </colgroup>
 <tbody>
 <tr class="odd">
-<td>Level of measurement of outcome variable</td>
-<td>Two Independent Groups without Confounding Adjustment</td>
-<td>Two Independent Groups without Confounding Adjustment</td>
+<td><strong>Level of measurement of outcome variable</strong></td>
+<td><strong>Two Independent Groups without Confounding Adjustment</strong></td>
+<td><strong>Two Independent Groups without Confounding Adjustment</strong></td>
 </tr>
 <tr class="even">
 <td>Dichotomous</td>
 <td>Chi2 Test</td>
-<td>logistic regression</td>
+<td><strong>logistic regression</strong></td>
 </tr>
 <tr class="odd">
 <td>Unordered categorical</td>
@@ -497,27 +518,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>ordinal logistic regression</td>
 </tr>
 <tr class="odd">
-<td>Continuous (normal)</td>
+<td>Continuous (normally distributed)</td>
 <td>T-test</td>
-<td>linear regression</td>
+<td><strong>linear regression</strong></td>
 </tr>
 <tr class="even">
 <td>Censored: time to event</td>
 <td>Log-rank test</td>
-<td>Cox regression</td>
+<td><strong>Cox regression</strong></td>
 </tr>
 </tbody>
 </table>
-<p>** Form of the predictors and their relationships to eachother+the outcome is properly specified</p>
-<p>DAG - daggitty&nbsp;</p>
+<p>From: From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Manual. Salt Lake City, UT: University of Utah School of Medicine.</p>
 <p><strong>Interpretation:</strong></p>
 <p>Regression coefficient = What change in the outcome do you expected if you change the predictor by 1 unit, holding all other variables constant</p>
 <ul>
-<li><p>For linear regression: additive change in outcome</p></li>
-<li><p>For logistic regression: multiplicative change in odds of the outcome</p></li>
-<li><p>For Cox regression: multiplicative change in the hazard of the outcome.&nbsp;</p></li>
+<li>For linear regression: additive change in outcome</li>
+<li>For logistic regression: multiplicative change in odds of the outcome</li>
+<li>For Cox regression: multiplicative change in the hazard of the outcome.&nbsp;</li>
 </ul>
 <p>Example: Occurence</p>
+<p>** Form of the predictors and their relationships to eachother+the outcome is properly specified</p>
+<p>DAG - daggitty&nbsp;</p>
 <p>Consider: do you want the adjusted or the unadjusted estimate?&nbsp;</p>
 </section>
 <section id="objective-2b-more-guidance-for-how-to-do-the-work" class="level2">
@@ -525,49 +547,232 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Packages</strong></p>
 <p>Other people have mostly done all the analyses you’ll want to do:</p>
 <ul>
-<li><p>Curated lists of relevant packages: <a href="https://cran.r-project.org/web/views/" class="uri">https://cran.r-project.org/web/views/</a></p></li>
-<li><p>'?package'&nbsp; or '?command' will bring up the documentation</p></li>
+<li>Curated lists of relevant packages: <a href="https://cran.r-project.org/web/views/" class="uri">https://cran.r-project.org/web/views/</a></li>
+<li>`install.packages( )` will install the packages</li>
+<li>`?package`&nbsp; or `?command` will bring up the documentation</li>
 </ul>
+<p>Example: Say you want to do a meta-analysis.</p>
+<p>Relevant packages: <a href="https://cran.r-project.org/web/views/MetaAnalysis.html" class="uri">https://cran.r-project.org/web/views/MetaAnalysis.html</a></p>
+<p>The ‘meta’ package looks good. Try using `install.packages(‘meta’)` to install it, then you can you can access the documentation using `?meta`</p>
+<p>Let’s try an example… I extracted data on all of the trials comparing high O2 to low O2 targets and uploaded to github.</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_sheet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 15
+  name   author  year doi   num_randomized num_patients num_high_o2 high_o2_died
+  &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;
+1 Oxyge… Girar…  2016 10.1…            460          432         216          74 
+2 CLOSE  Panwar  2016 10.1…            104          103          51          19 
+3 HYPER… Asfar   2017 10.1…            442          434         217         104 
+4 Lang2… Lang    2018 10.1…             65           65          38           9 
+5 COMAC… Jakku…  2018 10.1…            123          120          59          20 
+6 ICU-R… Mackle  2020 10.1…           1000          965         484         157.
+# ℹ 7 more variables: high_o2_alive &lt;dbl&gt;, num_low_o2 &lt;dbl&gt;, low_o2_died &lt;dbl&gt;,
+#   low_o2_alive &lt;dbl&gt;, target &lt;chr&gt;, outcome &lt;chr&gt;, population &lt;chr&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>authors <span class="ot">&lt;-</span> <span class="fu">select</span>(data_sheet, author)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, let’s meta-analyze it:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(meta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: metadat</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading 'meta' package (version 7.0-0).
+Type 'help(meta)' for a brief overview.
+Readers of 'Meta-Analysis with R (Use R!)' should install
+older version of 'meta' package: https://tinyurl.com/dt4y5drs</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#metabin takes events, total (rather than events, nonevents)</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>m_ex1 <span class="ot">&lt;-</span> meta<span class="sc">::</span><span class="fu">metabin</span>(low_o2_died, num_low_o2, high_o2_died, num_high_o2, <span class="at">data =</span> data_sheet, <span class="at">studlab =</span> <span class="fu">paste</span>(name, author, year), <span class="at">sm =</span> <span class="st">"OR"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>meta<span class="sc">::</span><span class="fu">forest</span>(m_ex1, <span class="at">comb.random =</span> <span class="cn">FALSE</span>, <span class="at">lab.c =</span> <span class="st">"High Oxygen"</span>, <span class="at">lab.e =</span> <span class="st">"Low Oxygen"</span>, <span class="at">label.left =</span> <span class="st">"Favors Low O2"</span>, <span class="at">label.right =</span> <span class="st">"Favors High O2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="fellow_stats_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>And if you want to get really cutting edge, you can do a trial sequential analysis (TSA) on it:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RTSA) <span class="co"># A package for performing TSA</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># A package that pulls in many data manipulation programs.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ forcats   1.0.0     ✔ readr     2.1.5
+✔ ggplot2   3.4.4     ✔ stringr   1.5.1
+✔ lubridate 1.9.3     ✔ tibble    3.2.1
+✔ purrr     1.0.2     ✔ tidyr     1.3.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>rtsa_df <span class="ot">&lt;-</span> data_sheet <span class="sc">|&gt;</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">"eI"</span> <span class="ot">=</span> high_o2_died, </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">"eC"</span> <span class="ot">=</span> low_o2_died, </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">"nI"</span> <span class="ot">=</span> num_high_o2,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">"nC"</span> <span class="ot">=</span> num_low_o2, </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>         <span class="st">"study"</span> <span class="ot">=</span> name)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(rtsa_df, class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$study
+[1] "character"
+
+$author
+[1] "character"
+
+$year
+[1] "numeric"
+
+$doi
+[1] "character"
+
+$num_randomized
+[1] "numeric"
+
+$num_patients
+[1] "numeric"
+
+$nI
+[1] "numeric"
+
+$eI
+[1] "numeric"
+
+$high_o2_alive
+[1] "numeric"
+
+$nC
+[1] "numeric"
+
+$eC
+[1] "numeric"
+
+$low_o2_alive
+[1] "numeric"
+
+$target
+[1] "character"
+
+$outcome
+[1] "character"
+
+$population
+[1] "character"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(rtsa_df, <span class="cf">function</span>(x) <span class="fu">which</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$study
+integer(0)
+
+$author
+integer(0)
+
+$year
+integer(0)
+
+$doi
+integer(0)
+
+$num_randomized
+integer(0)
+
+$num_patients
+integer(0)
+
+$nI
+integer(0)
+
+$eI
+integer(0)
+
+$high_o2_alive
+integer(0)
+
+$nC
+integer(0)
+
+$eC
+integer(0)
+
+$low_o2_alive
+integer(0)
+
+$target
+integer(0)
+
+$outcome
+integer(0)
+
+$population
+integer(0)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>an_rtsa <span class="ot">&lt;-</span> <span class="fu">RTSA</span>(<span class="at">type=</span><span class="st">"analysis"</span>, <span class="at">data =</span>  rtsa_df , <span class="at">outcome =</span> <span class="st">"RR"</span>, <span class="at">mc =</span> <span class="fl">0.9</span>, <span class="at">side =</span> <span class="dv">2</span>,  <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">beta =</span> <span class="fl">0.1</span>, <span class="at">es_alpha =</span> <span class="st">"esOF"</span>, <span class="at">es_beta =</span> <span class="st">"esOF"</span>, <span class="at">futility =</span> <span class="st">"non-binding"</span>, <span class="at">random_adj =</span> <span class="st">"D2"</span>, <span class="at">D2 =</span> <span class="fl">0.25</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Unknown or uninitialised column: `order`.
+Unknown or uninitialised column: `order`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in RTSA(type = "analysis", data = rtsa_df, outcome = "RR", mc = 0.9, :
+NB. The required information size adjusted by Diversity (D^2). This might cause
+an under-powered analysis. Consider changing the argument `random_adj` from
+`D2` (default) to `tau2`.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(an_rtsa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="fellow_stats_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Meaning, we’ve passed futility (at 90% power) for a 10% relative risk reduction a few trials ago. Cool.</p>
 <p><strong>Large Language Models:</strong> Options:</p>
 <ul>
-<li><p>OpenAI Chat GPT (requires subscription for best performance; custom GPTs)</p></li>
-<li><p>Github CoPilot (programming specific)</p></li>
-<li><p>Microsoft CoPilot - access to GPT4 = free through University of Utah</p></li>
+<li>OpenAI Chat GPT (requires subscription for best performance; custom GPTs)</li>
+<li>Github CoPilot (programming specific)</li>
+<li>Microsoft CoPilot - access to GPT4 = free through University of Utah</li>
 </ul>
 <p>Copilot:</p>
 <ul>
-<li><p>Visit <a href="https://bing.com/chat">bing.com/chat</a>.</p></li>
-<li><p>Select "sign in with a work or school account" under the Sign in icon in the upper right corner of the page.</p></li>
-<li><p>Enter your unid@umail.utah.edu and uNID password.</p></li>
-<li><p>Complete Duo two-factor authentication.</p></li>
-<li><p>The conversation is protected when a green shield appears in the upper right corner next to your username. It is critical to verify that the green shield is present for all conversations.</p></li>
+<li>Visit <a href="https://bing.com/chat">bing.com/chat</a>.</li>
+<li>Select "sign in with a work or school account" under the Sign in icon in the upper right corner of the page.</li>
+<li>Enter your unid@umail.utah.edu and uNID password.</li>
+<li>Complete Duo two-factor authentication.</li>
+<li>The conversation is protected when a green shield appears in the upper right corner next to your username. It is critical to verify that the green shield is present for all conversations.</li>
 </ul>
-<p>Prompt Engineering: 3 WAYS TO MAKE PROMPT BETTER:&nbsp;</p>
+<p>Prompt Engineering:</p>
 <ol type="1">
-<li><p>have the GPT take the persona that you want</p></li>
-<li><p>spell out the chain of thougt that you want the GPT to take (multiple steps in 1 prompt or several prompts building on one another)</p></li>
-<li><p>Give examples of what you want done. [this is particularly useful because the documents you give it can form a context and examples].&nbsp;</p></li>
+<li>have the GPT take the persona that you want</li>
+<li>spell out the chain of thougt that you want the GPT to take (either multiple steps in 1 prompt or several prompts building on one another works)</li>
+<li>Give examples or specifications of what you want done. [this is particularly useful because the documents you give it can form a context and examples].&nbsp;</li>
 </ol>
+<p>How I used GPT4 creating this workbook:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/IMG_ADC8B4B4AF1D-1.jpeg" class="img-fluid figure-img" width="462"></p>
+<figcaption class="figure-caption">The prompt I used to create the above example.</figcaption>
+</figure>
+</div>
 <p><strong>U of U Resources -</strong>&nbsp;</p>
 <ul>
-<li><p>One Data Science Hub Workshops: <a href="https://utah-data-science-hub.github.io/education_archived.html" class="uri">https://utah-data-science-hub.github.io/education_archived.html</a> &nbsp;</p></li>
-<li><p>Request CTSI help: <a href="https://ctsi.utah.edu/cores-and-services/triad" class="uri">https://ctsi.utah.edu/cores-and-services/triad</a>&nbsp;</p></li>
-<li><p>Intuitive Biostatistics by Harvey Motulsky - <a href="https://a.co/d/4NCk2bS" class="uri">https://a.co/d/4NCk2bS</a>&nbsp;</p></li>
+<li>One Data Science Hub Workshops: <a href="https://utah-data-science-hub.github.io/education_archived.html" class="uri">https://utah-data-science-hub.github.io/education_archived.html</a> &nbsp;</li>
+<li>Request CTSI help: <a href="https://ctsi.utah.edu/cores-and-services/triad" class="uri">https://ctsi.utah.edu/cores-and-services/triad</a>&nbsp;</li>
+<li>Intuitive Biostatistics by Harvey Motulsky - <a href="https://a.co/d/4NCk2bS" class="uri">https://a.co/d/4NCk2bS</a>&nbsp;</li>
 </ul>
-<p>When you click the <strong>Render</strong> button a document will be generated that includes both content and the output of embedded code. You can embed code like this:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
-</div>
-</div>
-<p>You can add options to executable code like this</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 4</code></pre>
-</div>
-</div>
-<p>The <code>echo: false</code> option disables the printing of code (only output is displayed).</p>
 </section>
 
 </main>
