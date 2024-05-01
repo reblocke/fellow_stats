@@ -96,6 +96,8 @@ From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Manual. 
 
 **Step 3: Visualize the distribution of each data-point** (detect outliers, data entry errors, etc.)
 
+Darren's hypothetical code lives in a spreadsheet "darren_proj.xlsx":
+
 ```{r}
 # Example
 ```
