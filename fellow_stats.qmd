@@ -98,8 +98,25 @@ From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Manual. 
 
 Darren's hypothetical code lives in a spreadsheet "darren_proj.xlsx":
 
+Here is some code that loads the excel spreadsheet into R (we'll revisit)
+
 ```{r}
-# Example
+#| echo: false
+library(readxl)
+library(dplyr)
+
+# Define the URL of the Excel file on GitHub
+url <- "https://github.com/reblocke/fellow_stats/raw/main/darren_proj.xls"
+
+# Download the file temporarily
+temp_file <- tempfile(fileext = ".xls")
+download.file(url, temp_file, mode = "wb")
+
+# Read the Excel file, select columns, and arrange
+darren_data_sheet <- read_excel(temp_file) 
+
+# Clean up by removing the temporary file
+unlink(temp_file)
 ```
 
 ## Objective 3: the Logic of Frequentist Inferential Statistics
