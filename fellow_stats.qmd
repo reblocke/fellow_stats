@@ -119,13 +119,80 @@ darren_data_sheet <- read_excel(temp_file)
 unlink(temp_file)
 ```
 
+It's already (mostly) clean.
+
+Let's summarize it:
+
+```{r}
+summary(darren_data_sheet)
+```
+
+Hmmm.. what's wrong with this?
+
+R need to be told that the binary variables are binary (and not characters)
+
+```{r}
+library(dplyr)
+
+# Convert 'y'/'n' in the splenectomy column to TRUE/FALSE
+darren_data_sheet <- darren_data_sheet %>%
+  mutate(splenectomy = ifelse(splenectomy == "y", TRUE, FALSE))
+
+# Assuming darren_data_sheet is your dataframe
+darren_data_sheet <- darren_data_sheet %>%
+  mutate(`got_cteph?` = ifelse(`got_cteph?` == 1, TRUE, FALSE))
+
+```
+
+Let's visualize each element:
+
+```{r}
+library(ggplot2)
+
+# First, the binary ones
+
+# Plot for splenectomy
+ggplot(darren_data_sheet, aes(x = factor(splenectomy))) +
+  geom_bar() +
+  labs(title = "Distribution of Splenectomy", x = "Splenectomy", y = "Count")
+
+# Plot for prox_v_dist
+ggplot(darren_data_sheet, aes(x = factor(prox_v_dist))) +
+  geom_bar() +
+  labs(title = "Distribution of Proximal vs. Distal", x = "Proximal vs Distal", y = "Count")
+
+# Plot for got_cteph?
+ggplot(darren_data_sheet, aes(x = factor(`got_cteph?`))) +
+  geom_bar() +
+  labs(title = "Distribution of CTEPH Diagnosis", x = "Got CTEPH?", y = "Count")
+
+
+```
+
+The categorical one:
+
+```{r}
+# Bar chart for hosp
+ggplot(darren_data_sheet, aes(x = factor(hosp))) +
+  geom_bar(fill = "coral", color = "black") +
+  labs(title = "Distribution of Hospital", x = "Hospital", y = "Count") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Adjust text angle for better readability if needed
+```
+
+and finally, the continuous one:
+
+```{r}
+# Histogram for qanadli
+ggplot(darren_data_sheet, aes(x = qanadli)) +
+  geom_histogram(bins = 30, fill = "blue", color = "black") +
+  labs(title = "Histogram of Qanadli Scores", x = "Qanadli Score", y = "Frequency")
+```
+
 ## Objective 3: the Logic of Frequentist Inferential Statistics
 
 Hume: we cannot directly observe causation 
 
 [![David Hume: causation is never directly observed](images/Allan_Ramsay_-_David_Hume,_1711_-_1776._Historian_and_philosopher_-_Google_Art_Project.jpg){fig-alt="David Hume" width="400"}](https://iep.utm.edu/hume-causation/)
-
-\[ \] split brain mirror experiments
 
 If there is an association between an \'exposure\' and an \'outcome\', there are 4 possible explanations
 
@@ -170,13 +237,9 @@ However, there is **no free lunch:** a statistical tests makes assumptions about
 
 Example interpretation:
 
-If the p-value from a Chi2 test is P=0.03
+If the p-value from a Chi2 test is P=0.03 - we say it's as unlikely this would occur from just chance as it would be to flip a fair coin heads 5 times in a row.
 
-```{r}
-# Example 1: 
-```
-
-(observations are independent; both variables are categorical; there are enough observations of each ), then it is unlikely chance alone explains the difference. 
+IF observations are independent; both variables are categorical; there are enough observations of each, then it is unlikely chance alone explains the difference. 
 
 Using the usual significance threshold (alpha), IF the assumptions hold, we conclude it is unlikely chance alone caused the finding (though it could have been confounding, bias, or a real effect).
 
@@ -206,10 +269,27 @@ From: From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Ma
 
 How can you collaborate effectively with a statistician? They will know these assumptions and can tell you when your analyses makes dubious assumptions (if you communicate the constraints of the problem correctly)
 
-Example 2: 
+Examples from Darren
+
+What test would we use to assess if "splenectomy" and "prox_v_dist" are associated beyond what's attributable to chance?
+
+To test if "splenectomy" and "hosp" are associated?
+
+If "splenectomy" and "qanadli" are associated?
 
 ```{r}
-# Example 2
+chi2_test_result <- chisq.test(darren_data_sheet$splenectomy, darren_data_sheet$prox_v_dist)
+print(chi2_test_result)
+```
+
+```{r}
+chi2_test_result <- chisq.test(darren_data_sheet$splenectomy, darren_data_sheet$hosp)
+print(chi2_test_result)
+```
+
+```{r}
+t_test_result <- t.test(qanadli ~ splenectomy, data = darren_data_sheet)
+print(t_test_result)
 ```
 
 ## Objective 4: Understand the logic of regression analysis
@@ -273,13 +353,40 @@ Regression coefficient = What change in the outcome do you expected if you chang
 -   For logistic regression: multiplicative change in odds of the outcome
 -   For Cox regression: multiplicative change in the hazard of the outcome. 
 
-Example: Occurence
+Example:
 
-\*\* Form of the predictors and their relationships to eachother+the outcome is properly specified
+Consider, if we want to test whether 'splenectomy' and 'got_cteph?' are associated, we could use a chi2 test:
 
-DAG - daggitty 
+```{r}
+chi2_test_result <- chisq.test(darren_data_sheet$splenectomy, darren_data_sheet$`got_cteph?`)
+print(chi2_test_result)
+```
+
+Alternatively you could specify a logistic regression
+
+("GLM" standards for 'general linear model'. Logistic regression is a type of glm where the family is binomial)
+
+```{r}
+logistic_model <- glm(`got_cteph?` ~ splenectomy, data = darren_data_sheet, family = binomial())
+
+# Output the summary of the model to see coefficients and statistics
+summary(logistic_model)
+```
+
+![Causal relationship of Splenectomy and CTEPH](images/Screenshot 2024-04-30 at 9.11.26 PM.png)
+
+(<https://www.dagitty.net/dags.html> Daggity is a tool to specify such diagrams)
+
+```{r}
+logistic_model_updated <- glm(`got_cteph?` ~ splenectomy + prox_v_dist, data = darren_data_sheet, family = binomial())
+summary(logistic_model_updated)
+```
+
+![Causal diagram of Splenectomy, Prox_v_dist, and CTEPH](images/Screenshot 2024-04-30 at 9.11.20 PM.png)
 
 Consider: do you want the adjusted or the unadjusted estimate? 
+
+Hint: it depends....
 
 ## Objective 2(b):  More guidance for how to do the work
 

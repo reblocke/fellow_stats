@@ -311,8 +311,106 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Manual. Salt Lake City, UT: University of Utah School of Medicine.</p>
 <p><strong>Step 3: Visualize the distribution of each data-point</strong> (detect outliers, data entry errors, etc.)</p>
+<p>Darren’s hypothetical code lives in a spreadsheet “darren_proj.xlsx”:</p>
+<p>Here is some code that loads the excel spreadsheet into R (we’ll revisit)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+</div>
+<p>It’s already (mostly) clean.</p>
+<p>Let’s summarize it:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(darren_data_sheet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   patient_id    splenectomy        prox_v_dist           qanadli     
+ Min.   : 1.00   Length:20          Length:20          Min.   : 2.00  
+ 1st Qu.: 5.75   Class :character   Class :character   1st Qu.: 3.75  
+ Median :10.50   Mode  :character   Mode  :character   Median :10.00  
+ Mean   :10.50                                         Mean   :10.30  
+ 3rd Qu.:15.25                                         3rd Qu.:15.00  
+ Max.   :20.00                                         Max.   :25.00  
+   got_cteph?       hosp          
+ Min.   :0.00   Length:20         
+ 1st Qu.:0.00   Class :character  
+ Median :0.00   Mode  :character  
+ Mean   :0.25                     
+ 3rd Qu.:0.25                     
+ Max.   :1.00                     </code></pre>
+</div>
+</div>
+<p>Hmmm.. what’s wrong with this?</p>
+<p>R need to be told that the binary variables are binary (and not characters)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert 'y'/'n' in the splenectomy column to TRUE/FALSE</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>darren_data_sheet <span class="ot">&lt;-</span> darren_data_sheet <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">splenectomy =</span> <span class="fu">ifelse</span>(splenectomy <span class="sc">==</span> <span class="st">"y"</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming darren_data_sheet is your dataframe</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>darren_data_sheet <span class="ot">&lt;-</span> darren_data_sheet <span class="sc">%&gt;%</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">got_cteph?</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">got_cteph?</span><span class="st">`</span> <span class="sc">==</span> <span class="dv">1</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s visualize each element:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># First, the binary ones</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot for splenectomy</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(darren_data_sheet, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(splenectomy))) <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Splenectomy"</span>, <span class="at">x =</span> <span class="st">"Splenectomy"</span>, <span class="at">y =</span> <span class="st">"Count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="fellow_stats_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot for prox_v_dist</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(darren_data_sheet, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(prox_v_dist))) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Proximal vs. Distal"</span>, <span class="at">x =</span> <span class="st">"Proximal vs Distal"</span>, <span class="at">y =</span> <span class="st">"Count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="fellow_stats_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot for got_cteph?</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(darren_data_sheet, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(<span class="st">`</span><span class="at">got_cteph?</span><span class="st">`</span>))) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of CTEPH Diagnosis"</span>, <span class="at">x =</span> <span class="st">"Got CTEPH?"</span>, <span class="at">y =</span> <span class="st">"Count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="fellow_stats_files/figure-html/unnamed-chunk-4-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The categorical one:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar chart for hosp</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(darren_data_sheet, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(hosp))) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"coral"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Hospital"</span>, <span class="at">x =</span> <span class="st">"Hospital"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))  <span class="co"># Adjust text angle for better readability if needed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="fellow_stats_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>and finally, the continuous one:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram for qanadli</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(darren_data_sheet, <span class="fu">aes</span>(<span class="at">x =</span> qanadli)) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Histogram of Qanadli Scores"</span>, <span class="at">x =</span> <span class="st">"Qanadli Score"</span>, <span class="at">y =</span> <span class="st">"Frequency"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="fellow_stats_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 </section>
 <section id="objective-3-the-logic-of-frequentist-inferential-statistics" class="level2">
@@ -324,7 +422,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption class="figure-caption">David Hume: causation is never directly observed</figcaption>
 </figure>
 </div>
-<p>[ ] split brain mirror experiments</p>
 <p>If there is an association between an 'exposure' and an 'outcome', there are 4 possible explanations</p>
 <ol type="1">
 <li>Chance</li>
@@ -384,11 +481,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>'Signal to noise'</strong>: if the alternative hypothesis is that the coin is subtly imbalanced, it'll be a much harder to detect signal.&nbsp;This is the logic of power analysis - if you’re looking for a subtle signal (e.g.&nbsp;small difference, noisy data, rare events), you’ll need a bigger study.</p>
 <p>However, there is <strong>no free lunch:</strong> a statistical tests makes assumptions about the data, and if those assumptions hold in reality, then the implications from the analysis follow.</p>
 <p>Example interpretation:</p>
-<p>If the p-value from a Chi2 test is P=0.03</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 1: </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>(observations are independent; both variables are categorical; there are enough observations of each ), then it is unlikely chance alone explains the difference.&nbsp;</p>
+<p>If the p-value from a Chi2 test is P=0.03 - we say it’s as unlikely this would occur from just chance as it would be to flip a fair coin heads 5 times in a row.</p>
+<p>IF observations are independent; both variables are categorical; there are enough observations of each, then it is unlikely chance alone explains the difference.&nbsp;</p>
 <p>Using the usual significance threshold (alpha), IF the assumptions hold, we conclude it is unlikely chance alone caused the finding (though it could have been confounding, bias, or a real effect).</p>
 <p><strong>How do you choose the right test?</strong></p>
 <p>What type of variables? How many groups? Are the samples correlated (e.g.&nbsp;observation from the same patient at two different times)?</p>
@@ -450,9 +544,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>From: From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Manual. Salt Lake City, UT: University of Utah School of Medicine.</p>
 <p>How can you collaborate effectively with a statistician? They will know these assumptions and can tell you when your analyses makes dubious assumptions (if you communicate the constraints of the problem correctly)</p>
-<p>Example 2:&nbsp;</p>
+<p>Examples from Darren</p>
+<p>What test would we use to assess if “splenectomy” and “prox_v_dist” are associated beyond what’s attributable to chance?</p>
+<p>To test if “splenectomy” and “hosp” are associated?</p>
+<p>If “splenectomy” and “qanadli” are associated?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>chi2_test_result <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(darren_data_sheet<span class="sc">$</span>splenectomy, darren_data_sheet<span class="sc">$</span>prox_v_dist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in chisq.test(darren_data_sheet$splenectomy,
+darren_data_sheet$prox_v_dist): Chi-squared approximation may be incorrect</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(chi2_test_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's Chi-squared test with Yates' continuity correction
+
+data:  darren_data_sheet$splenectomy and darren_data_sheet$prox_v_dist
+X-squared = 1.1122e-31, df = 1, p-value = 1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>chi2_test_result <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(darren_data_sheet<span class="sc">$</span>splenectomy, darren_data_sheet<span class="sc">$</span>hosp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in chisq.test(darren_data_sheet$splenectomy, darren_data_sheet$hosp):
+Chi-squared approximation may be incorrect</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(chi2_test_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's Chi-squared test
+
+data:  darren_data_sheet$splenectomy and darren_data_sheet$hosp
+X-squared = 0.13889, df = 3, p-value = 0.9868</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>t_test_result <span class="ot">&lt;-</span> <span class="fu">t.test</span>(qanadli <span class="sc">~</span> splenectomy, <span class="at">data =</span> darren_data_sheet)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(t_test_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  qanadli by splenectomy
+t = 0.90543, df = 16.101, p-value = 0.3786
+alternative hypothesis: true difference in means between group FALSE and group TRUE is not equal to 0
+95 percent confidence interval:
+ -4.020416 10.020416
+sample estimates:
+mean in group FALSE  mean in group TRUE 
+               11.5                 8.5 </code></pre>
+</div>
 </div>
 </section>
 <section id="objective-4-understand-the-logic-of-regression-analysis" class="level2">
@@ -536,10 +677,93 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>For logistic regression: multiplicative change in odds of the outcome</li>
 <li>For Cox regression: multiplicative change in the hazard of the outcome.&nbsp;</li>
 </ul>
-<p>Example: Occurence</p>
-<p>** Form of the predictors and their relationships to eachother+the outcome is properly specified</p>
-<p>DAG - daggitty&nbsp;</p>
+<p>Example:</p>
+<p>Consider, if we want to test whether ‘splenectomy’ and ‘got_cteph?’ are associated, we could use a chi2 test:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>chi2_test_result <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(darren_data_sheet<span class="sc">$</span>splenectomy, darren_data_sheet<span class="sc">$</span><span class="st">`</span><span class="at">got_cteph?</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in chisq.test(darren_data_sheet$splenectomy,
+darren_data_sheet$`got_cteph?`): Chi-squared approximation may be incorrect</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(chi2_test_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's Chi-squared test with Yates' continuity correction
+
+data:  darren_data_sheet$splenectomy and darren_data_sheet$`got_cteph?`
+X-squared = 0.27778, df = 1, p-value = 0.5982</code></pre>
+</div>
+</div>
+<p>Alternatively you could specify a logistic regression</p>
+<p>(“GLM” standards for ‘general linear model’. Logistic regression is a type of glm where the family is binomial)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>logistic_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="st">`</span><span class="at">got_cteph?</span><span class="st">`</span> <span class="sc">~</span> splenectomy, <span class="at">data =</span> darren_data_sheet, <span class="at">family =</span> <span class="fu">binomial</span>())</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Output the summary of the model to see coefficients and statistics</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(logistic_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = `got_cteph?` ~ splenectomy, family = binomial(), 
+    data = darren_data_sheet)
+
+Coefficients:
+                Estimate Std. Error z value Pr(&gt;|z|)  
+(Intercept)      -1.6094     0.7746  -2.078   0.0377 *
+splenectomyTRUE   1.0986     1.0646   1.032   0.3021  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 22.493  on 19  degrees of freedom
+Residual deviance: 21.398  on 18  degrees of freedom
+AIC: 25.398
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Screenshot%202024-04-30%20at%209.11.26%20PM.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Causal relationship of Splenectomy and CTEPH</figcaption>
+</figure>
+</div>
+<p>(<a href="https://www.dagitty.net/dags.html" class="uri">https://www.dagitty.net/dags.html</a> Daggity is a tool to specify such diagrams)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>logistic_model_updated <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="st">`</span><span class="at">got_cteph?</span><span class="st">`</span> <span class="sc">~</span> splenectomy <span class="sc">+</span> prox_v_dist, <span class="at">data =</span> darren_data_sheet, <span class="at">family =</span> <span class="fu">binomial</span>())</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(logistic_model_updated)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = `got_cteph?` ~ splenectomy + prox_v_dist, family = binomial(), 
+    data = darren_data_sheet)
+
+Coefficients:
+                Estimate Std. Error z value Pr(&gt;|z|)  
+(Intercept)      -1.8474     1.0473  -1.764   0.0777 .
+splenectomyTRUE   1.1383     1.0762   1.058   0.2902  
+prox_v_distprox   0.3873     1.0890   0.356   0.7221  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 22.493  on 19  degrees of freedom
+Residual deviance: 21.270  on 17  degrees of freedom
+AIC: 27.27
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Screenshot%202024-04-30%20at%209.11.20%20PM.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Causal diagram of Splenectomy, Prox_v_dist, and CTEPH</figcaption>
+</figure>
+</div>
 <p>Consider: do you want the adjusted or the unadjusted estimate?&nbsp;</p>
+<p>Hint: it depends….</p>
 </section>
 <section id="objective-2b-more-guidance-for-how-to-do-the-work" class="level2">
 <h2 class="anchored" data-anchor-id="objective-2b-more-guidance-for-how-to-do-the-work">Objective 2(b): More guidance for how to do the work</h2>
@@ -555,23 +779,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The ‘meta’ package looks good. Try using `install.packages(‘meta’)` to install it, then you can you can access the documentation using `?meta`</p>
 <p>Let’s try an example… I extracted data on all of the trials comparing high O2 to low O2 targets and uploaded to github.</p>
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'dplyr'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:stats':
-
-    filter, lag</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:base':
-
-    intersect, setdiff, setequal, union</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_sheet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_sheet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 15
   name   author  year doi   num_randomized num_patients num_high_o2 high_o2_died
@@ -585,11 +793,11 @@ Attaching package: 'dplyr'</code></pre>
 # ℹ 7 more variables: high_o2_alive &lt;dbl&gt;, num_low_o2 &lt;dbl&gt;, low_o2_died &lt;dbl&gt;,
 #   low_o2_alive &lt;dbl&gt;, target &lt;chr&gt;, outcome &lt;chr&gt;, population &lt;chr&gt;</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>authors <span class="ot">&lt;-</span> <span class="fu">select</span>(data_sheet, author)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>authors <span class="ot">&lt;-</span> <span class="fu">select</span>(data_sheet, author)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, let’s meta-analyze it:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(meta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(meta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: metadat</code></pre>
 </div>
@@ -599,36 +807,36 @@ Type 'help(meta)' for a brief overview.
 Readers of 'Meta-Analysis with R (Use R!)' should install
 older version of 'meta' package: https://tinyurl.com/dt4y5drs</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#metabin takes events, total (rather than events, nonevents)</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>m_ex1 <span class="ot">&lt;-</span> meta<span class="sc">::</span><span class="fu">metabin</span>(low_o2_died, num_low_o2, high_o2_died, num_high_o2, <span class="at">data =</span> data_sheet, <span class="at">studlab =</span> <span class="fu">paste</span>(name, author, year), <span class="at">sm =</span> <span class="st">"OR"</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>meta<span class="sc">::</span><span class="fu">forest</span>(m_ex1, <span class="at">comb.random =</span> <span class="cn">FALSE</span>, <span class="at">lab.c =</span> <span class="st">"High Oxygen"</span>, <span class="at">lab.e =</span> <span class="st">"Low Oxygen"</span>, <span class="at">label.left =</span> <span class="st">"Favors Low O2"</span>, <span class="at">label.right =</span> <span class="st">"Favors High O2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co">#metabin takes events, total (rather than events, nonevents)</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>m_ex1 <span class="ot">&lt;-</span> meta<span class="sc">::</span><span class="fu">metabin</span>(low_o2_died, num_low_o2, high_o2_died, num_high_o2, <span class="at">data =</span> data_sheet, <span class="at">studlab =</span> <span class="fu">paste</span>(name, author, year), <span class="at">sm =</span> <span class="st">"OR"</span>)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>meta<span class="sc">::</span><span class="fu">forest</span>(m_ex1, <span class="at">comb.random =</span> <span class="cn">FALSE</span>, <span class="at">lab.c =</span> <span class="st">"High Oxygen"</span>, <span class="at">lab.e =</span> <span class="st">"Low Oxygen"</span>, <span class="at">label.left =</span> <span class="st">"Favors Low O2"</span>, <span class="at">label.right =</span> <span class="st">"Favors High O2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="fellow_stats_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<p><img src="fellow_stats_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>And if you want to get really cutting edge, you can do a trial sequential analysis (TSA) on it:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RTSA) <span class="co"># A package for performing TSA</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># A package that pulls in many data manipulation programs.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RTSA) <span class="co"># A package for performing TSA</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># A package that pulls in many data manipulation programs.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ forcats   1.0.0     ✔ readr     2.1.5
-✔ ggplot2   3.4.4     ✔ stringr   1.5.1
+✔ forcats   1.0.0     ✔ stringr   1.5.1
 ✔ lubridate 1.9.3     ✔ tibble    3.2.1
 ✔ purrr     1.0.2     ✔ tidyr     1.3.1
+✔ readr     2.1.5     
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>rtsa_df <span class="ot">&lt;-</span> data_sheet <span class="sc">|&gt;</span> </span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">"eI"</span> <span class="ot">=</span> high_o2_died, </span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">"eC"</span> <span class="ot">=</span> low_o2_died, </span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">"nI"</span> <span class="ot">=</span> num_high_o2,</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">"nC"</span> <span class="ot">=</span> num_low_o2, </span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>         <span class="st">"study"</span> <span class="ot">=</span> name)</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(rtsa_df, class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>rtsa_df <span class="ot">&lt;-</span> data_sheet <span class="sc">|&gt;</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">"eI"</span> <span class="ot">=</span> high_o2_died, </span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">"eC"</span> <span class="ot">=</span> low_o2_died, </span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">"nI"</span> <span class="ot">=</span> num_high_o2,</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">"nC"</span> <span class="ot">=</span> num_low_o2, </span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>         <span class="st">"study"</span> <span class="ot">=</span> name)</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(rtsa_df, class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$study
 [1] "character"
@@ -675,7 +883,7 @@ $outcome
 $population
 [1] "character"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(rtsa_df, <span class="cf">function</span>(x) <span class="fu">which</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(rtsa_df, <span class="cf">function</span>(x) <span class="fu">which</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$study
 integer(0)
@@ -722,7 +930,7 @@ integer(0)
 $population
 integer(0)</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>an_rtsa <span class="ot">&lt;-</span> <span class="fu">RTSA</span>(<span class="at">type=</span><span class="st">"analysis"</span>, <span class="at">data =</span>  rtsa_df , <span class="at">outcome =</span> <span class="st">"RR"</span>, <span class="at">mc =</span> <span class="fl">0.9</span>, <span class="at">side =</span> <span class="dv">2</span>,  <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">beta =</span> <span class="fl">0.1</span>, <span class="at">es_alpha =</span> <span class="st">"esOF"</span>, <span class="at">es_beta =</span> <span class="st">"esOF"</span>, <span class="at">futility =</span> <span class="st">"non-binding"</span>, <span class="at">random_adj =</span> <span class="st">"D2"</span>, <span class="at">D2 =</span> <span class="fl">0.25</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>an_rtsa <span class="ot">&lt;-</span> <span class="fu">RTSA</span>(<span class="at">type=</span><span class="st">"analysis"</span>, <span class="at">data =</span>  rtsa_df , <span class="at">outcome =</span> <span class="st">"RR"</span>, <span class="at">mc =</span> <span class="fl">0.9</span>, <span class="at">side =</span> <span class="dv">2</span>,  <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">beta =</span> <span class="fl">0.1</span>, <span class="at">es_alpha =</span> <span class="st">"esOF"</span>, <span class="at">es_beta =</span> <span class="st">"esOF"</span>, <span class="at">futility =</span> <span class="st">"non-binding"</span>, <span class="at">random_adj =</span> <span class="st">"D2"</span>, <span class="at">D2 =</span> <span class="fl">0.25</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Unknown or uninitialised column: `order`.
 Unknown or uninitialised column: `order`.</code></pre>
@@ -733,9 +941,9 @@ NB. The required information size adjusted by Diversity (D^2). This might cause
 an under-powered analysis. Consider changing the argument `random_adj` from
 `D2` (default) to `tau2`.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(an_rtsa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(an_rtsa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="fellow_stats_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<p><img src="fellow_stats_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Meaning, we’ve passed futility (at 90% power) for a 10% relative risk reduction a few trials ago. Cool.</p>
