@@ -14,10 +14,10 @@ editor: visual
 
 **Bad news**: you'll need to learn how to do statistical analyses:
 
--   realistically, you\'ll probably have to do your own stats
--   if you join a project that has a statistican, you\'ll still need to be able to specify, critique, and interpret the analyses.
+-   realistically, you'll probably have to do your own stats
+-   if you join a project that has a statistican, you'll still need to be able to specify, critique, and interpret the analyses.
 
-## Statistical Programming 
+## Statistical Programming
 
 +---------------------------+---------------------------------------------------+------------------------------------------------------------------------------+--------------------------------------+
 |                           | R                                                 | Stata                                                                        | Python                               |
@@ -28,22 +28,24 @@ editor: visual
 +---------------------------+---------------------------------------------------+------------------------------------------------------------------------------+--------------------------------------+
 | Strengths                 | Best epi / trials libraries for helpful functions | Simple functionality; powerful quasi-experimental support. U of U MSCI uses. | Best NLP, machine learning libraries |
 +---------------------------+---------------------------------------------------+------------------------------------------------------------------------------+--------------------------------------+
-| Weakness                  | Clunky syntax; many \'dialects\'                  | Simple syntax                                                                | Moderately Complex Syntax            |
+| Weakness                  | Clunky syntax; many 'dialects'                    | Simple syntax                                                                | Moderately Complex Syntax            |
 +---------------------------+---------------------------------------------------+------------------------------------------------------------------------------+--------------------------------------+
 | Explainable Programming\* | Quarto                                            | No options                                                                   | Jupyter                              |
 +---------------------------+---------------------------------------------------+------------------------------------------------------------------------------+--------------------------------------+
 
 \*The idea that code should be readable by consumers of science has caught on in more quantitative fields (Math, CS), but will be coming to medicine. Long overdue.
 
-## Objective 1:  Get Set Up
+## Objective 1: Get Set Up
 
-+----------+------------------------------------+-----------------------------------------+-------------------------------------------------------------------------------------------+
-| Step 1:  | Install R Language                 | <https://cran.r-project.org/>           |                                                                                           |
-+----------+------------------------------------+-----------------------------------------+-------------------------------------------------------------------------------------------+
-| Step 2:  | Install RStudio                    | <https://posit.co/downloads/>           | RStudio is an IDE (development environment)                                               |
-+----------+------------------------------------+-----------------------------------------+-------------------------------------------------------------------------------------------+
-| Step 3:  | Install Quarto (formerly Markdown) | <https://quarto.org/docs/get-started/>  | Facilitates sharing and explaining your code. Will soon be standard in medical science.   |
-+----------+------------------------------------+-----------------------------------------+-------------------------------------------------------------------------------------------+
++------------+------------------------------------+--------------------------------------------+-----------------------------------------------------------------------------------------+
+| Step 1:    | Install R Language                 | <https://cran.r-project.org/>              |                                                                                         |
++------------+------------------------------------+--------------------------------------------+-----------------------------------------------------------------------------------------+
+| Step 2:    | Install RStudio                    | <https://posit.co/downloads/>              | RStudio is an IDE (development environment)                                             |
++------------+------------------------------------+--------------------------------------------+-----------------------------------------------------------------------------------------+
+| Step 3:    | Install Quarto (formerly Markdown) | <https://quarto.org/docs/get-started/>     | Facilitates sharing and explaining your code. Will soon be standard in medical science. |
++------------+------------------------------------+--------------------------------------------+-----------------------------------------------------------------------------------------+
+| Step 4:    | Download this document             | <https://github.com/reblocke/fellow_stats> | "fellow_stats.qmd"                                                                      |
++------------+------------------------------------+--------------------------------------------+-----------------------------------------------------------------------------------------+
 
 This page is made using Quarto.
 
@@ -64,33 +66,33 @@ Step 0: Save yourself a headache and collect your data in a processable format [
 -   Ordered Categorical (ordinal scale): e.g. Room air, nasal cannula, HFNC, intubated, ECMO, dead
 -   Continuous (interval & ratio scales - differ by whether 0 is special): e.g. Temperature (Celsius or Kelvin, respectively)
 
-+-------------+------------------+-------------+---------------------+----------------+
-|             | **dichotomous**  | **nominal** | **ordinal**         | **interval**   |
-+-------------+------------------+-------------+---------------------+----------------+
-| a.ka.       | binary           | categorical | ordered categorical | continuous     |
-+-------------+------------------+-------------+---------------------+----------------+
-| n           | X                | X           | X                   | X              |
-+-------------+------------------+-------------+---------------------+----------------+
-| \%          | X                | X           | X                   | X              |
-+-------------+------------------+-------------+---------------------+----------------+
-| min         |                  |             | X                   | X              |
-+-------------+------------------+-------------+---------------------+----------------+
-| max         |                  |             | X                   | X              |
-+-------------+------------------+-------------+---------------------+----------------+
-| range       |                  |             | X                   | X              |
-+-------------+------------------+-------------+---------------------+----------------+
-| mode        | X                | X           | X                   | X              |
-+-------------+------------------+-------------+---------------------+----------------+
-| mean        |                  |             |                     | X              |
-+-------------+------------------+-------------+---------------------+----------------+
-| median      |                  |             | X                   | X              |
-+-------------+------------------+-------------+---------------------+----------------+
-| IQR         |                  |             | X                   | X              |
-+-------------+------------------+-------------+---------------------+----------------+
-| Std. dev.   |                  |             |                     | X              |
-+-------------+------------------+-------------+---------------------+----------------+
-| Std. err.   |                  |             |                     | X              |
-+-------------+------------------+-------------+---------------------+----------------+
++------------+-----------------+-------------+---------------------+--------------+
+|            | **dichotomous** | **nominal** | **ordinal**         | **interval** |
++------------+-----------------+-------------+---------------------+--------------+
+| a.ka.      | binary          | categorical | ordered categorical | continuous   |
++------------+-----------------+-------------+---------------------+--------------+
+| n          | X               | X           | X                   | X            |
++------------+-----------------+-------------+---------------------+--------------+
+| \%         | X               | X           | X                   | X            |
++------------+-----------------+-------------+---------------------+--------------+
+| min        |                 |             | X                   | X            |
++------------+-----------------+-------------+---------------------+--------------+
+| max        |                 |             | X                   | X            |
++------------+-----------------+-------------+---------------------+--------------+
+| range      |                 |             | X                   | X            |
++------------+-----------------+-------------+---------------------+--------------+
+| mode       | X               | X           | X                   | X            |
++------------+-----------------+-------------+---------------------+--------------+
+| mean       |                 |             |                     | X            |
++------------+-----------------+-------------+---------------------+--------------+
+| median     |                 |             | X                   | X            |
++------------+-----------------+-------------+---------------------+--------------+
+| IQR        |                 |             | X                   | X            |
++------------+-----------------+-------------+---------------------+--------------+
+| Std. dev.  |                 |             |                     | X            |
++------------+-----------------+-------------+---------------------+--------------+
+| Std. err.  |                 |             |                     | X            |
++------------+-----------------+-------------+---------------------+--------------+
 
 From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Manual. Salt Lake City, UT: University of Utah School of Medicine.
 
@@ -194,7 +196,7 @@ Hume: we cannot directly observe causation 
 
 [![David Hume: causation is never directly observed](images/Allan_Ramsay_-_David_Hume,_1711_-_1776._Historian_and_philosopher_-_Google_Art_Project.jpg){fig-alt="David Hume" width="400"}](https://iep.utm.edu/hume-causation/)
 
-If there is an association between an \'exposure\' and an \'outcome\', there are 4 possible explanations
+If there is an association between an 'exposure' and an 'outcome', there are 4 possible explanations
 
 1.  Chance
 2.  Confounding (some other factor influences the exposure and the outcome)
@@ -209,9 +211,9 @@ If there is an association between an \'exposure\' and an \'outcome\', there are
 
 \*note: Bayesian analysis follows a different logic. 
 
-**P-values ONLY address possibility 1:** how likely is it that chance alone could explain the observed result If the two variables were not correlated, what the likeliihood that you\'d see as extreme results or more - just as a result of chance? 
+**P-values ONLY address possibility 1:** how likely is it that chance alone could explain the observed result If the two variables were not correlated, what the likeliihood that you'd see as extreme results or more - just as a result of chance? 
 
-Consider: if I start flipping a coin, how many consecutives \"Heads\" need to occur before you\'ll suspect it\'s not a fair coin? 
+Consider: if I start flipping a coin, how many consecutives "Heads" need to occur before you'll suspect it's not a fair coin? 
 
 |              |            |             |
 |--------------|------------|-------------|
@@ -228,10 +230,10 @@ More at: <https://stat.lesslikely.com/s-values/>
 
 Sidebar: understanding multiplicity: If we all flipped a coin 5 times, what is the chance that one of us would get 5 heads in a row? 
 
--   If 10 people = (1-0.03125)\^10 = 0.727.  23.3% of at least 1 HHHHH -\> we\'re back to weak evidence of a real effect. 
+-   If 10 people = (1-0.03125)\^10 = 0.727.  23.3% of at least 1 HHHHH -\> we're back to weak evidence of a real effect. 
 -   This is obviously true when multiple tests are reported, but less obviously also true if you try several analyses and choose the "best one" after seeing the result. Hence, prespecification.
 
-**\'Signal to noise\'**: if the alternative hypothesis is that the coin is subtly imbalanced, it\'ll be a much harder to detect signal. This is the logic of power analysis - if you're looking for a subtle signal (e.g. small difference, noisy data, rare events), you'll need a bigger study.
+**'Signal to noise'**: if the alternative hypothesis is that the coin is subtly imbalanced, it'll be a much harder to detect signal. This is the logic of power analysis - if you're looking for a subtle signal (e.g. small difference, noisy data, rare events), you'll need a bigger study.
 
 However, there is **no free lunch:** a statistical tests makes assumptions about the data, and if those assumptions hold in reality, then the implications from the analysis follow.
 
@@ -250,7 +252,7 @@ What type of variables? How many groups? Are the samples correlated (e.g. observ
 +----------------------------------------------+----------------------------------------------+----------------------------------------------------------------------+-------------------------------+------------------------------------------------------------------+
 | **Level of measurement of outcome variable** | **Two Independent Groups**                   | **Three or more Independent Groups**                                 | **Two Correlated\* Samples**  | **Three or more Correlated\* Samples**                           |
 +----------------------------------------------+----------------------------------------------+----------------------------------------------------------------------+-------------------------------+------------------------------------------------------------------+
-| Dichotomous                                  | **chi-square** or Fisher\'s exact test       | **chi-square** or Fisher-Freeman-Halton test                         | McNemar test                  | Cochran Q test                                                   |
+| Dichotomous                                  | **chi-square** or Fisher's exact test        | **chi-square** or Fisher-Freeman-Halton test                         | McNemar test                  | Cochran Q test                                                   |
 +----------------------------------------------+----------------------------------------------+----------------------------------------------------------------------+-------------------------------+------------------------------------------------------------------+
 | Unordered Categorical                        | **chi-square** or Fisher-Freeman-Halton test | **chi-square** or Fisher-Freeman-Halton test                         | Stuart-Maxwell test           | Multiplicity adjusted Stuart-Maxwell tests^*\#*^                 |
 +----------------------------------------------+----------------------------------------------+----------------------------------------------------------------------+-------------------------------+------------------------------------------------------------------+
@@ -294,7 +296,7 @@ print(t_test_result)
 
 ## Objective 4: Understand the logic of regression analysis
 
-Recall, if there is an association between an \'exposure\' and an \'outcome\', there are 4 possible explanations
+Recall, if there is an association between an 'exposure' and an 'outcome', there are 4 possible explanations
 
 1.  Chance
 2.  Confounding (some other factor influences the exposure and the outcome)
@@ -315,7 +317,7 @@ For non-randomized data, you must make an argument against point 2. This is the 
 
 Regression comes with additional assumptions: 
 
--   Independent observations (special \"mixed models\" can relax this)
+-   Independent observations (special "mixed models" can relax this)
 -   The form of the output variable is correct\* 
 -   The form of the predictor variables are correct
 -   The relationship between the predictors are properly specified.\*\*
@@ -329,19 +331,19 @@ Thus the logic is: if the assumptions of the models hold in reality, then the de
 
 Output variable (aka the dependent variable, predicted variable) form determines the type of regression : 
 
-+----------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------+
-| **Level of measurement of outcome variable** | **Two Independent Groups without Confounding Adjustment** | **Two Independent Groups without Confounding Adjustment**  |
-+----------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------+
-| Dichotomous                                  | Chi2 Test                                                 | **logistic regression**                                    |
-+----------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------+
-| Unordered categorical                        | Chi2 Test                                                 | multinomial logistic regression                            |
-+----------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------+
-| Ordered categorical                          | Wilcoxon-Mann-Whitney                                     | ordinal logistic regression                                |
-+----------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------+
-| Continuous (normally distributed)            | T-test                                                    | **linear regression**                                      |
-+----------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------+
-| Censored: time to event                      | Log-rank test                                             | **Cox regression**                                         |
-+----------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------+
++----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
+| **Level of measurement of outcome variable** | **Two Independent Groups without Confounding Adjustment** | **Two Independent Groups without Confounding Adjustment** |
++----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
+| Dichotomous                                  | Chi2 Test                                                 | **logistic regression**                                   |
++----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
+| Unordered categorical                        | Chi2 Test                                                 | multinomial logistic regression                           |
++----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
+| Ordered categorical                          | Wilcoxon-Mann-Whitney                                     | ordinal logistic regression                               |
++----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
+| Continuous (normally distributed)            | T-test                                                    | **linear regression**                                     |
++----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
+| Censored: time to event                      | Log-rank test                                             | **Cox regression**                                        |
++----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
 
 From: From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Manual. Salt Lake City, UT: University of Utah School of Medicine.
 
@@ -373,7 +375,7 @@ logistic_model <- glm(`got_cteph?` ~ splenectomy, data = darren_data_sheet, fami
 summary(logistic_model)
 ```
 
-![Causal relationship of Splenectomy and CTEPH](images/Screenshot 2024-04-30 at 9.11.26 PM.png)
+![Causal relationship of Splenectomy and CTEPH](images/Screenshot%202024-04-30%20at%209.11.26%20PM.png)
 
 (<https://www.dagitty.net/dags.html> Daggity is a tool to specify such diagrams)
 
@@ -382,13 +384,13 @@ logistic_model_updated <- glm(`got_cteph?` ~ splenectomy + prox_v_dist, data = d
 summary(logistic_model_updated)
 ```
 
-![Causal diagram of Splenectomy, Prox_v_dist, and CTEPH](images/Screenshot 2024-04-30 at 9.11.20 PM.png)
+![Causal diagram of Splenectomy, Prox_v_dist, and CTEPH](images/Screenshot%202024-04-30%20at%209.11.20%20PM.png)
 
 Consider: do you want the adjusted or the unadjusted estimate? 
 
 Hint: it depends....
 
-## Objective 2(b):  More guidance for how to do the work
+## Objective 2(b): More guidance for how to do the work
 
 **Packages**
 
@@ -465,8 +467,7 @@ plot(an_rtsa)
 
 Meaning, we've passed futility (at 90% power) for a 10% relative risk reduction a few trials ago. Cool.
 
-**Large Language Models:**
-Options:
+**Large Language Models:** Options:
 
 -   OpenAI Chat GPT (requires subscription for best performance; custom GPTs)
 -   Github CoPilot (programming specific)
@@ -475,7 +476,7 @@ Options:
 Copilot:
 
 -   Visit [bing.com/chat](https://bing.com/chat).
--   Select \"sign in with a work or school account\" under the Sign in icon in the upper right corner of the page.
+-   Select "sign in with a work or school account" under the Sign in icon in the upper right corner of the page.
 -   Enter your unid\@umail.utah.edu and uNID password.
 -   Complete Duo two-factor authentication.
 -   The conversation is protected when a green shield appears in the upper right corner next to your username. It is critical to verify that the green shield is present for all conversations.
