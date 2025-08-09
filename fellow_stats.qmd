@@ -30,33 +30,25 @@ editor: visual
 
 ## Statistical Programming
 
-+---------------------------+---------------------------------------------------+------------------------------------------------------------------------------------+--------------------------------------+
-|                           | R                                                 | Stata                                                                              | Python                               |
-+---------------------------+---------------------------------------------------+------------------------------------------------------------------------------------+--------------------------------------+
-| Cost                      | Free                                              | Requires License                                                                   | Free                                 |
-+---------------------------+---------------------------------------------------+------------------------------------------------------------------------------------+--------------------------------------+
-| IDE                       | RStudio                                           | Built in editor                                                                    | Many (Visual Code best)              |
-+---------------------------+---------------------------------------------------+------------------------------------------------------------------------------------+--------------------------------------+
-| Strengths                 | Best epi / trials libraries for helpful functions | Simple functionality; powerful quasi-experimental/Meta-analysis. U of U MSCI uses. | Best NLP, machine learning libraries |
-+---------------------------+---------------------------------------------------+------------------------------------------------------------------------------------+--------------------------------------+
-| Weakness                  | Clunky syntax; many 'dialects'                    | Simple syntax                                                                      | Moderately Complex Syntax            |
-+---------------------------+---------------------------------------------------+------------------------------------------------------------------------------------+--------------------------------------+
-| Explainable Programming\* | Quarto                                            | No options                                                                         | Jupyter                              |
-+---------------------------+---------------------------------------------------+------------------------------------------------------------------------------------+--------------------------------------+
+|  |  |  |  |
+|----|----|----|----|
+|  | R | Stata | Python |
+| Cost | Free | Requires License | Free |
+| IDE | RStudio | Built in editor | Many (Visual Code best) |
+| Strengths | Best epi / trials libraries for helpful functions | Simple functionality; powerful quasi-experimental/Meta-analysis. U of U MSCI uses. | Best NLP, machine learning libraries |
+| Weakness | Clunky syntax; many 'dialects' | Simple syntax | Moderately Complex Syntax |
+| Explainable Programming\* | Quarto | No options | Jupyter |
 
 \*The idea that code should be readable by consumers of science has caught on in more quantitative fields (Math, CS), but will be coming to medicine. Long overdue. Learn now.
 
 ## Objective 1: Get Set Up
 
-+------------+------------------------------------+--------------------------------------------+-----------------------------------------------------------------------------------------+
-| Step 1:    | Install R Language                 | <https://cran.r-project.org/>              |                                                                                         |
-+------------+------------------------------------+--------------------------------------------+-----------------------------------------------------------------------------------------+
-| Step 2:    | Install RStudio                    | <https://posit.co/downloads/>              | RStudio is an IDE (development environment)                                             |
-+------------+------------------------------------+--------------------------------------------+-----------------------------------------------------------------------------------------+
-| Step 3:    | Install Quarto (formerly Markdown) | <https://quarto.org/docs/get-started/>     | Facilitates sharing and explaining your code. Will soon be standard in medical science. |
-+------------+------------------------------------+--------------------------------------------+-----------------------------------------------------------------------------------------+
-| Step 4:    | Download this document             | <https://github.com/reblocke/fellow_stats> | "fellow_stats.qmd"                                                                      |
-+------------+------------------------------------+--------------------------------------------+-----------------------------------------------------------------------------------------+
+|  |  |  |  |
+|----|----|----|----|
+| Step 1: | Install R Language | <https://cran.r-project.org/> |  |
+| Step 2: | Install RStudio | <https://posit.co/downloads/> | RStudio is an IDE (development environment) |
+| Step 3: | Install Quarto (formerly Markdown) | <https://quarto.org/docs/get-started/> | Facilitates sharing and explaining your code. Will soon be standard in medical science. |
+| Step 4: | Download this document | <https://github.com/reblocke/fellow_stats> | "fellow_stats.qmd" |
 
 This page is made using Quarto.
 
@@ -77,33 +69,21 @@ Step 0: Save yourself a headache and collect your data in a processable format [
 -   Ordered Categorical (ordinal scale): e.g. Room air, nasal cannula, HFNC, intubated, ECMO, dead
 -   Continuous (interval & ratio scales - differ by whether 0 is special): e.g. Temperature (Celsius or Kelvin, respectively)
 
-+------------+-----------------+-------------+---------------------+--------------+
-|            | **dichotomous** | **nominal** | **ordinal**         | **interval** |
-+------------+-----------------+-------------+---------------------+--------------+
-| a.ka.      | binary          | categorical | ordered categorical | continuous   |
-+------------+-----------------+-------------+---------------------+--------------+
-| n          | X               | X           | X                   | X            |
-+------------+-----------------+-------------+---------------------+--------------+
-| \%         | X               | X           | X                   | X            |
-+------------+-----------------+-------------+---------------------+--------------+
-| min        |                 |             | X                   | X            |
-+------------+-----------------+-------------+---------------------+--------------+
-| max        |                 |             | X                   | X            |
-+------------+-----------------+-------------+---------------------+--------------+
-| range      |                 |             | X                   | X            |
-+------------+-----------------+-------------+---------------------+--------------+
-| mode       | X               | X           | X                   | X            |
-+------------+-----------------+-------------+---------------------+--------------+
-| mean       |                 |             |                     | X            |
-+------------+-----------------+-------------+---------------------+--------------+
-| median     |                 |             | X                   | X            |
-+------------+-----------------+-------------+---------------------+--------------+
-| IQR        |                 |             | X                   | X            |
-+------------+-----------------+-------------+---------------------+--------------+
-| Std. dev.  |                 |             |                     | X            |
-+------------+-----------------+-------------+---------------------+--------------+
-| Std. err.  |                 |             |                     | X            |
-+------------+-----------------+-------------+---------------------+--------------+
+|           |                 |             |                     |              |
+|-----------|-----------------|-------------|---------------------|--------------|
+|           | **dichotomous** | **nominal** | **ordinal**         | **interval** |
+| a.ka.     | binary          | categorical | ordered categorical | continuous   |
+| n         | X               | X           | X                   | X            |
+| \%        | X               | X           | X                   | X            |
+| min       |                 |             | X                   | X            |
+| max       |                 |             | X                   | X            |
+| range     |                 |             | X                   | X            |
+| mode      | X               | X           | X                   | X            |
+| mean      |                 |             |                     | X            |
+| median    |                 |             | X                   | X            |
+| IQR       |                 |             | X                   | X            |
+| Std. dev. |                 |             |                     | X            |
+| Std. err. |                 |             |                     | X            |
 
 From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Manual. Salt Lake City, UT: University of Utah School of Medicine.
 
@@ -342,19 +322,14 @@ Thus the logic is: if the assumptions of the models hold in reality, then the de
 
 Output variable (aka the dependent variable, predicted variable) form determines the type of regression : 
 
-+----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
+|  |  |  |
+|----|----|----|
 | **Level of measurement of outcome variable** | **Two Independent Groups without Confounding Adjustment** | **Two Independent Groups without Confounding Adjustment** |
-+----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
-| Dichotomous                                  | Chi2 Test                                                 | **logistic regression**                                   |
-+----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
-| Unordered categorical                        | Chi2 Test                                                 | multinomial logistic regression                           |
-+----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
-| Ordered categorical                          | Wilcoxon-Mann-Whitney                                     | ordinal logistic regression                               |
-+----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
-| Continuous (normally distributed)            | T-test                                                    | **linear regression**                                     |
-+----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
-| Censored: time to event                      | Log-rank test                                             | **Cox regression**                                        |
-+----------------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------+
+| Dichotomous | Chi2 Test | **logistic regression** |
+| Unordered categorical | Chi2 Test | multinomial logistic regression |
+| Ordered categorical | Wilcoxon-Mann-Whitney | ordinal logistic regression |
+| Continuous (normally distributed) | T-test | **linear regression** |
+| Censored: time to event | Log-rank test | **Cox regression** |
 
 From: From: Stoddard GJ. Biostatistics and Epidemiology Using Stata: A Course Manual. Salt Lake City, UT: University of Utah School of Medicine.
 
