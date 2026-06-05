@@ -1,0 +1,42 @@
+# Pulmonary Fellows Statistics Workshop
+
+Repository: https://github.com/reblocke/fellow_stats
+Purpose: Workshop to get pulmonary fellows started on statistics
+Status: No manuscript version is expected. Teaching text is repository-authored unless otherwise noted.
+
+## Human-Readable Entry Points
+- `README.md` is the primary human-facing overview.
+- `llms.txt` is a compact machine-readable index and should not replace the README.
+
+## Repository Layout
+- `LICENSE`
+- `O2 icu target MA.xls`
+- `darren_proj.xls`
+- `fellow_stats.Rproj`
+- `fellow_stats.html`
+- `fellow_stats.qmd`
+- `images/Allan_Ramsay_-_David_Hume,_1711_-_1776._Historian_and_philosopher_-_Google_Art_Project.jpg`
+- `images/IMG_ADC8B4B4AF1D-1.jpeg`
+- `"images/Screenshot 2024-04-30 at 9.06.21\342\200\257PM.png"`
+- `"images/Screenshot 2024-04-30 at 9.11.20\342\200\257PM.png"`
+- `"images/Screenshot 2024-04-30 at 9.11.26\342\200\257PM.png"`
+
+## Data and Reuse Boundaries
+Teaching materials only
+
+## Workflow
+Site build workflow
+
+## Dependencies
+Repo scripts/license
+
+## Citation
+No publication DOI is assigned to this repository. Cite the GitHub repository URL and the commit or release used.
+
+## License
+MIT License for repository code; see `LICENSE`. Third-party and publisher materials remain under their original terms.
+
+## Agent Cautions
+- Do not re-add a README appendix aimed primarily at LLMs; integrate user-facing details into normal README sections.
+- Keep restricted clinical data, private drafts, publisher PDFs, local paths, and generated outputs out of public documentation unless explicitly reviewed.
+- Prefer concise summaries plus links to citable records over copied manuscript or publisher text.
