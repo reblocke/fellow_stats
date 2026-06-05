@@ -4,6 +4,17 @@ Workshop to get pulmonary fellows started on statistics
 
 ## Repository Notes
 
+### Description
+
+Workshop to get pulmonary fellows started on statistics
+
+### Repository Layout
+
+- `fellow_stats.qmd` - Quarto workshop source.
+- `fellow_stats.html` - Rendered workshop handout.
+- `images/` - Teaching images used by the workshop.
+- `LICENSE` - Repository license.
+
 ### Project Status
 
 No manuscript version is expected. Teaching text is repository-authored unless otherwise noted.
