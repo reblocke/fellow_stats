@@ -14,13 +14,7 @@ Workshop to get pulmonary fellows started on statistics
 - Inspect scripts/notebooks before running them; do not assume generated outputs are current.
 
 ## Workflow
-From the repository root, use this as the initial run guidance:
-
-```bash
-Site build workflow
-```
-
-If the command is a placeholder, refine it after reading the local scripts and existing README.
+The workshop source is `fellow_stats.qmd`. Render relevant content/layout changes with `quarto render fellow_stats.qmd` after inspecting its executable chunks and available R dependencies. Documentation-only instruction edits need reference and whitespace checks.
 
 ## Verification Before Publishing Changes
 - Run `git diff --check`.
